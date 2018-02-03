@@ -16,7 +16,7 @@ public class Frontier {
 	/**
 	 * Concerned region
 	 */
-	private Region regionEnd;
+	private String regionEndName;
 	
 	/**
 	 * Possible moves
@@ -27,15 +27,15 @@ public class Frontier {
 	/**
 	 * @return the regionEnd
 	 */
-	public Region getRegionEnd() {
-		return regionEnd;
+	public String getRegionEndName() {
+		return regionEndName;
 	}
 
 	/**
-	 * @param regionEnd the regionEnd to set
+	 * @param regionEndName the regionEnd to set
 	 */
-	public void setRegionEnd(Region regionEnd) {
-		this.regionEnd = regionEnd;
+	public void setRegionEnd(String regionEndName) {
+		this.regionEndName = regionEndName;
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class Frontier {
 	public String toString() {
 		return String.format(
 				"%s - [ regionEnd = %s, moves = [ %s ] ]",
-				this.getClass().getName(), regionEnd.toString(),
+				this.getClass().getName(), regionEndName,
 				moves.stream().map(Move::toString).collect(Collectors.joining(", ")));
 	}
 	
