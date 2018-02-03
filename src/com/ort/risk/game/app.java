@@ -50,11 +50,17 @@ public class app {
             //Set map's modes
             setMapModes(mapObj, path, root);
 
-            /* TODO : A ce moment, l'utilisateur choisis le mode qu'il souhaite jouer, on crée alors le bon nombre d'objet Player en conséquence*/
+            /* TODO : L'utilisateur choisis le modequ'il souhaite jouer*/
+
+            /* TODO : On set le flag selected sur le mode selectionné*/
+
+            /* TODO : On crée le nombre de Player correspondant au nb du mode*/
 
             //Set map's zone, that's the big boy function
             setMapZones(mapObj, path, root);
 
+            //Here we got a complete map object, and ready to play
+            System.out.println(mapObj.toString());
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -218,13 +224,11 @@ public class app {
 
                 mapObj.addZone(objZone);
             }
-            System.out.println(mapObj.toString());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
 
     }
-
 
 }
