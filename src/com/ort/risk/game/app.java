@@ -74,6 +74,7 @@ public class app {
 
             List<Mode> allModes = mapObj.getModes();
             allModes.get(0).setIsSelected(true);
+
             System.out.println("Mode selectionné : ");
             System.out.println("\tNb player : " + allModes.get(0).getNbPlayer());
             System.out.println("\tNb Troupes initial : " + allModes.get(0).getNbInitTroops());
@@ -92,26 +93,37 @@ public class app {
             }
 
             //Regions' attribution
+            //Filter to get only the not occupied regions
+            List<Region> notOccupiedRegions = mapObj.getRegions().stream()
+                    .filter(p -> !p.getIsOccupied()).collect(Collectors.toList());
 
-            /*
-            Je fais de la merde alors j'arrete pour ajd
+            while(notOccupiedRegions.size() >= allModes.get(0).getNbPlayer()) {
+                for(int p = 0; p < mapObj.getPlayerList().size(); p++){
+                    int rand =  (int)Math.floor(Math.random() * mapObj.getPlayerList().size() *100) /100;
 
-            List<Zone> allZones = mapObj.getZones();
-            List<Region> mergedRegionList =  new ArrayList<Region>();
-            //For every zone
-            for(int o = 0; o < allZones.size(); o++){
-                Zone currentZone =  allZones.get(o);
-                List<Region> allCurrentZoneRegions = currentZone.getRegions();
+                    //Both region and zone list references the same region objects
+                    //Hence, change flags in the region list would change them in the zone list too
 
-                for(int p = 0; p < allCurrentZoneRegions.size() ; p++ ){
-                    Region currentRegion = allCurrentZoneRegions.get(p);
-                    if(!currentRegion.getIsOccupied()){
-                        mergedRegionList.add(currentRegion);
-                    }
-
+                    Region newOccupiedRegion = notOccupiedRegions.get(rand);
+                    newOccupiedRegion.setIsOccupied(true);
+                    mapObj.getPlayerList().get(p).addControlledRegion(newOccupiedRegion);
                 }
+
+                notOccupiedRegions = notOccupiedRegions.stream()
+                        .filter(p -> !p.getIsOccupied()).collect(Collectors.toList());
             }
-            */
+
+
+            for(int pq = 0; pq < mapObj.getPlayerList().size(); pq++){
+                System.out.println(mapObj.getPlayerList().get(pq).getName());
+                List<Region> playerRegion = mapObj.getPlayerList().get(pq).getControlledRegions();
+                for(int pr =0; pr < playerRegion.size(); pr++){
+                    System.out.println("\t" + playerRegion.get(pr).getName());
+                }
+
+            }
+
+
 
 
 
@@ -267,6 +279,7 @@ public class app {
                             }
 
                             objZone.addRegion(objRegion);
+                            mapObj.addRegion(objRegion);
 
 
                         }

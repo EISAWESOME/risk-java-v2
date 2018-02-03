@@ -28,7 +28,11 @@ public class Map {
 	 * Every zones in the map
 	 */
 	private List<Zone> zones = new ArrayList<Zone>();
-	
+
+    /**
+     * Every regions of every zones of the map
+     */
+    private List<Region> regions = new ArrayList<Region>();
 	/**
 	 * Every moves possible
 	 */
@@ -97,6 +101,28 @@ public class Map {
      */
     public void addZone(Zone zone) {
         this.zones.add(zone);
+    }
+
+
+    /**
+     * @return the zones
+     */
+    public List<Region> getRegions() {
+        return regions;
+    }
+
+    /**
+     * @param regions the regions to set
+     */
+    public void setRegions(List<Region> regions) {
+        this.regions = regions;
+    }
+
+    /**
+     * @param region the region to add
+     */
+    public void addRegion(Region region) {
+        this.regions.add(region);
     }
 
 	/**
