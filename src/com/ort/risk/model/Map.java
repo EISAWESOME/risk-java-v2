@@ -149,6 +149,15 @@ public class Map {
 	 * @return String representation of this Map
 	 */
 
+	private Map()
+	{}
+
+	private static Map INSTANCE = new Map();
+
+	public static Map getInstance(){
+		return INSTANCE;
+	}
+
 	public String toString() {
 		return String.format(
 				"%s - [ name = %s, img = %s, nbMinReinforcement = %d, divider = %d, modes = [ %s ], zones = [ %s ] ]",
