@@ -149,18 +149,83 @@ public class app {
                     Region objRegion = new Region();
 
                     //Set region's name
-                    String rName = path.evaluate("name", region);
+                    String rName = path.evaluate("name", region).trim();
                     objRegion.setName(rName);
 
                     //System.out.println(region.getNodeName() + " : " + region.getTextContent());
 
+
+                    Node adjRoot = (Node)path.evaluate("adjacencies", root, XPathConstants.NODE);
+                    //System.out.println(adjRoot.getTextContent());
+
                     //Look for region's corresponding adjacency object
+                    String adjExpr = "//adjacency";
+                    NodeList matchedAdjList = (NodeList)path.evaluate(adjExpr, adjRoot, XPathConstants.NODESET);
+                    /*
+
+                    // ATTENTION
+                    // Ca marche SEULEMENT car les Adj sont dans le meme ordre que les regions
+                    Node matchedAdj = matchedAdjList.item(j);
+                    System.out.println(matchedAdj.getTextContent());
+
+                    */
+
+                    // Plutot nul a chier et pas rapide mais j'ai pas trouver mieu
+                    // On devrais pouvoir matcher directement l'adjacency par rapport a la valeur de <start><region><name>
+                    // mais j'y suis pas arrivé
+
+                    // For every adjacency node
+                    for(int k = 0; k < matchedAdjList.getLength(); k++){
+                        Node matchedAdj = matchedAdjList.item(k);
+                        Node matchedAdjStartRegionName = (Node)path.evaluate("start/region/name", matchedAdj, XPathConstants.NODE);
+                        // If the adjacency strat match with the current iteration's region name
+                        if(matchedAdjStartRegionName.getTextContent().trim().equals(rName)){
+
+                            NodeList endList = (NodeList)path.evaluate("ends//end", matchedAdj, XPathConstants.NODESET);
+
+                            // For every end region of the matched adjacency
+                            for(int l = 0; l < endList.getLength(); l++){
+
+                                // Create Frontier object
+                                Node end = endList.item(l);
+                                Frontier objFrontier = new Frontier();
+
+                                Node endRegionNameNode = (Node)path.evaluate("region/name", end, XPathConstants.NODE);
+                                String endRegionName = endRegionNameNode.getTextContent().trim();
+
+                                // Create endRegion object for the Frontier
+                                Region objRegionEnd = new Region();
+                                objRegionEnd.setName(endRegionName);
+                                objRegionEnd.setBonus(0);
+
+                                objFrontier.setRegionEnd(objRegionEnd);
+
+                                NodeList endRegionMoves = (NodeList) path.evaluate("moves//move", end, XPathConstants.NODESET);
+                                int lazl = endRegionMoves.getLength();
+                                for(int m = 0; m < endRegionMoves.getLength(); m++){
+                                    Node move = endRegionMoves.item(m);
+                                    Move objMove = new Move();
+                                    Node moveNameNode = (Node)path.evaluate("name", move, XPathConstants.NODE);
+                                    String moveName = moveNameNode.getTextContent().trim();
+                                    objMove.setName(moveName);
+                                    objFrontier.addMove(objMove);
+                                }
+                                objRegion.addFrontier(objFrontier);
+                            }
+
+                            objZone.addRegion(objRegion);
+
+
+                        }
+
+                    }
 
 
                 }
 
-
+                mapObj.addZone(objZone);
             }
+            System.out.println(mapObj.toString());
         } catch(Exception ex){
             ex.printStackTrace();
         }
