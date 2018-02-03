@@ -2,6 +2,7 @@ package com.ort.risk.game;
 
 import com.ort.risk.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,21 +64,55 @@ public class app {
             //Here we got a complete map object, and ready to play
             //System.out.println(mapObj.toString());
 
-            System.out.println("INPUT EN DUR");
-            System.out.println("-----------------------------------");
+
+            System.out.println("__________.___  _____________  __.\n" +
+                    "\\______   \\   |/   _____/    |/ _|\n" +
+                    " |       _/   |\\_____  \\|      <  \n" +
+                    " |    |   \\   |/        \\    |  \\ \n" +
+                    " |____|_  /___/_______  /____|__ \\\n" +
+                    "        \\/            \\/        \\/");
 
             List<Mode> allModes = mapObj.getModes();
             allModes.get(0).setIsSelected(true);
             System.out.println("Mode selectionné : ");
             System.out.println("\tNb player : " + allModes.get(0).getNbPlayer());
             System.out.println("\tNb Troupes initial : " + allModes.get(0).getNbInitTroops());
+            System.out.println("\n");
 
+            System.out.println("Liste des joueurs : ");
+            int nbTroupePerPlayer = allModes.get(0).getNbInitTroops();
             for(int n = 1; n <= allModes.get(0).getNbPlayer(); n++){
 
                 // Add players to the map
-                mapObj.addPlayer(new Player("Player"+ n, n));
+                mapObj.addPlayer(new Player("Player"+ n, n, nbTroupePerPlayer));
+
+                System.out.println("\tNom : " + "Player"+ n);
+                System.out.println("\tOrdre de passage : " + n);
 
             }
+
+            //Regions' attribution
+
+            /*
+            Je fais de la merde alors j'arrete pour ajd
+
+            List<Zone> allZones = mapObj.getZones();
+            List<Region> mergedRegionList =  new ArrayList<Region>();
+            //For every zone
+            for(int o = 0; o < allZones.size(); o++){
+                Zone currentZone =  allZones.get(o);
+                List<Region> allCurrentZoneRegions = currentZone.getRegions();
+
+                for(int p = 0; p < allCurrentZoneRegions.size() ; p++ ){
+                    Region currentRegion = allCurrentZoneRegions.get(p);
+                    if(!currentRegion.getIsOccupied()){
+                        mergedRegionList.add(currentRegion);
+                    }
+
+                }
+            }
+            */
+
 
 
 
@@ -144,7 +179,6 @@ public class app {
 
     }
 
-
     protected static void setMapZones(Map mapObj, XPath path, Element root) {
 
         try {
@@ -171,6 +205,7 @@ public class app {
                 for (int j = 0; j < regionList.getLength(); j++) {
                     Node region = regionList.item(j);
                     Region objRegion = new Region();
+                    objRegion.setIsOccupied(false);
 
                     //Set region's name
                     String rName = path.evaluate("name", region).trim();

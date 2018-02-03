@@ -28,6 +28,8 @@ public class Region {
 	 */
 	private List<Frontier> frontiers = new ArrayList<Frontier>();
 
+	private boolean isOccupied = false;
+
 	
 	/**
 	 * @return the name
@@ -77,6 +79,14 @@ public class Region {
 	 */
 	public void addFrontier(Frontier frontier) {
 		this.frontiers.add(frontier);
+	}
+
+	public boolean getIsOccupied(){
+		return this.isOccupied;
+	}
+
+	public void setIsOccupied(boolean state){
+		this.isOccupied = state;
 	}
 	
 	

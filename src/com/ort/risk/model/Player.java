@@ -17,6 +17,8 @@ public class Player {
 
 	private String name;
 	private int order;
+	private int nbTroupes;
+
 	private List<Region> controlledRegions  = new ArrayList<Region>();
 
 	public void setName(String name){
@@ -36,6 +38,14 @@ public class Player {
 		return this.order;
 	}
 
+	public void setNbTroupes(int nbTroupes){
+		this.nbTroupes = nbTroupes;
+	}
+
+	public int getNbTroupes(){
+		return this.nbTroupes;
+	}
+
 	public List<Region> getControlledRegions(){
 		return this.controlledRegions;
 	}
@@ -49,16 +59,13 @@ public class Player {
 	}
 
 	public void removeControlledRegion(Region region){
-		for(Iterator<Region> iter = this.controlledRegions.listIterator(); iter.hasNext();){
-			Region a = iter.next();
-			if(a.getName().equals(region.getName())){
-				iter.remove();
-			}
-		}
+		this.controlledRegions.remove(region);
+
 	}
 
-	public Player(String name, int order) {
+	public Player(String name, int order, int nbTroupes) {
 		this.name = name;
 		this.order = order;
+		this.nbTroupes = nbTroupes;
 	}
 }
