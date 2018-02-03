@@ -193,12 +193,7 @@ public class app {
                                 Node endRegionNameNode = (Node)path.evaluate("region/name", end, XPathConstants.NODE);
                                 String endRegionName = endRegionNameNode.getTextContent().trim();
 
-                                // Create endRegion object for the Frontier
-                                Region objRegionEnd = new Region();
-                                objRegionEnd.setName(endRegionName);
-                                objRegionEnd.setBonus(0);
-
-                                objFrontier.setRegionEnd(objRegionEnd);
+                                objFrontier.setRegionEnd(endRegionName);
 
                                 NodeList endRegionMoves = (NodeList) path.evaluate("moves//move", end, XPathConstants.NODESET);
                                 int lazl = endRegionMoves.getLength();
