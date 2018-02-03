@@ -3,6 +3,7 @@
  */
 package com.ort.risk.model;
 
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,12 +27,12 @@ public class Map {
 	/**
 	 * Every zones in the map
 	 */
-	private List<Zone> zones;
+	private List<Zone> zones = new ArrayList<Zone>();
 	
 	/**
 	 * Every moves possible
 	 */
-	private List<Mode> modes;
+	private List<Mode> modes = new ArrayList<Mode>();
 	
 	/**
 	 * Minimum number of reinforcement per tour
@@ -147,6 +148,7 @@ public class Map {
 	 * Printer of Map
 	 * @return String representation of this Map
 	 */
+
 	public String toString() {
 		return String.format(
 				"%s - [ name = %s, img = %s, nbMinReinforcement = %d, divider = %d, modes = [ %s ], zones = [ %s ] ]",
