@@ -25,7 +25,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 
-
 /**
  * @author CS
  */
@@ -57,13 +56,13 @@ public class app {
             setMapZones(mapObj, path, root);
 
 
-        } catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
 
-    protected static void setMapParams(Map mapObj, XPath path, Element root){
+    protected static void setMapParams(Map mapObj, XPath path, Element root) {
         try {
 
             // Set the map's name
@@ -71,7 +70,7 @@ public class app {
             mapObj.setName(nameStr);
 
             //Set the map's img url
-            String imgStr = (String)path.evaluate("/map/image", root);
+            String imgStr = (String) path.evaluate("/map/image", root);
             mapObj.setImg(imgStr);
 
 
@@ -83,13 +82,13 @@ public class app {
             Integer nbDiv = Integer.parseInt((path.evaluate("/map/divisor", root)).trim());
             mapObj.setDivider(nbDiv);
 
-        } catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
     }
 
-    protected static void setMapModes(Map mapObj, XPath path, Element root){
+    protected static void setMapModes(Map mapObj, XPath path, Element root) {
 
         try {
             //Get all <mode> from <modes>
@@ -113,7 +112,7 @@ public class app {
                 //mapObj.toString();
                 mapObj.addMode(objMode);
             }
-        } catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -121,7 +120,7 @@ public class app {
     }
 
 
-    protected static void setMapZones(Map mapObj, XPath path, Element root){
+    protected static void setMapZones(Map mapObj, XPath path, Element root) {
 
         try {
             //Get all <zone> from <zones>
@@ -141,10 +140,10 @@ public class app {
                 Integer zBonus = Integer.parseInt((path.evaluate("bonus", zone)).trim());
                 objZone.setBonus(zBonus);
 
-                NodeList regionList = (NodeList)path.evaluate("regions/region", zone, XPathConstants.NODESET);
+                NodeList regionList = (NodeList) path.evaluate("regions/region", zone, XPathConstants.NODESET);
 
                 // For each zone's region
-                for(int j = 0; j < regionList.getLength(); j++){
+                for (int j = 0; j < regionList.getLength(); j++) {
                     Node region = regionList.item(j);
                     Region objRegion = new Region();
 
@@ -155,12 +154,12 @@ public class app {
                     //System.out.println(region.getNodeName() + " : " + region.getTextContent());
 
 
-                    Node adjRoot = (Node)path.evaluate("adjacencies", root, XPathConstants.NODE);
+                    Node adjRoot = (Node) path.evaluate("adjacencies", root, XPathConstants.NODE);
                     //System.out.println(adjRoot.getTextContent());
 
                     //Look for region's corresponding adjacency object
                     String adjExpr = "//adjacency";
-                    NodeList matchedAdjList = (NodeList)path.evaluate(adjExpr, adjRoot, XPathConstants.NODESET);
+                    NodeList matchedAdjList = (NodeList) path.evaluate(adjExpr, adjRoot, XPathConstants.NODESET);
                     /*
 
                     // ATTENTION
@@ -175,32 +174,31 @@ public class app {
                     // mais j'y suis pas arrivé
 
                     // For every adjacency node
-                    for(int k = 0; k < matchedAdjList.getLength(); k++){
+                    for (int k = 0; k < matchedAdjList.getLength(); k++) {
                         Node matchedAdj = matchedAdjList.item(k);
-                        Node matchedAdjStartRegionName = (Node)path.evaluate("start/region/name", matchedAdj, XPathConstants.NODE);
+                        Node matchedAdjStartRegionName = (Node) path.evaluate("start/region/name", matchedAdj, XPathConstants.NODE);
                         // If the adjacency strat match with the current iteration's region name
-                        if(matchedAdjStartRegionName.getTextContent().trim().equals(rName)){
+                        if (matchedAdjStartRegionName.getTextContent().trim().equals(rName)) {
 
-                            NodeList endList = (NodeList)path.evaluate("ends//end", matchedAdj, XPathConstants.NODESET);
+                            NodeList endList = (NodeList) path.evaluate("ends//end", matchedAdj, XPathConstants.NODESET);
 
                             // For every end region of the matched adjacency
-                            for(int l = 0; l < endList.getLength(); l++){
+                            for (int l = 0; l < endList.getLength(); l++) {
 
                                 // Create Frontier object
                                 Node end = endList.item(l);
                                 Frontier objFrontier = new Frontier();
 
-                                Node endRegionNameNode = (Node)path.evaluate("region/name", end, XPathConstants.NODE);
+                                Node endRegionNameNode = (Node) path.evaluate("region/name", end, XPathConstants.NODE);
                                 String endRegionName = endRegionNameNode.getTextContent().trim();
 
                                 objFrontier.setRegionEnd(endRegionName);
 
                                 NodeList endRegionMoves = (NodeList) path.evaluate("moves//move", end, XPathConstants.NODESET);
-                                int lazl = endRegionMoves.getLength();
-                                for(int m = 0; m < endRegionMoves.getLength(); m++){
+                                for (int m = 0; m < endRegionMoves.getLength(); m++) {
                                     Node move = endRegionMoves.item(m);
                                     Move objMove = new Move();
-                                    Node moveNameNode = (Node)path.evaluate("name", move, XPathConstants.NODE);
+                                    Node moveNameNode = (Node) path.evaluate("name", move, XPathConstants.NODE);
                                     String moveName = moveNameNode.getTextContent().trim();
                                     objMove.setName(moveName);
                                     objFrontier.addMove(objMove);
@@ -221,14 +219,12 @@ public class app {
                 mapObj.addZone(objZone);
             }
             System.out.println(mapObj.toString());
-        } catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
 
     }
-
-
 
 
 }
