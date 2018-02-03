@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
  */
 public class app {
     public static void main(String[] args) {
-        Map mapObj = new Map();
+        Map mapObj = Map.getInstance();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
         /* TODO : La map doit etre importer d'apres un input de l'utilisateur, pas en dur*/
@@ -44,11 +44,15 @@ public class app {
             XPathFactory xpf = XPathFactory.newInstance();
             XPath path = xpf.newXPath();
 
+            String[] guiArgs = new String[5];
             //Set map's Img, name, minimal and divider
             setMapParams(mapObj, path, root);
 
             //Set map's modes
             setMapModes(mapObj, path, root);
+
+            //Set map's zone, that's the big boy function
+            setMapZones(mapObj, path, root);
 
             /* TODO : L'utilisateur choisis le modequ'il souhaite jouer*/
 
@@ -56,11 +60,26 @@ public class app {
 
             /* TODO : On crée le nombre de Player correspondant au nb du mode*/
 
-            //Set map's zone, that's the big boy function
-            setMapZones(mapObj, path, root);
-
             //Here we got a complete map object, and ready to play
-            System.out.println(mapObj.toString());
+            //System.out.println(mapObj.toString());
+
+            System.out.println("INPUT EN DUR");
+            System.out.println("-----------------------------------");
+
+            List<Mode> allModes = mapObj.getModes();
+            allModes.get(0).setIsSelected(true);
+            System.out.println("Mode selectionné : ");
+            System.out.println("\tNb player : " + allModes.get(0).getNbPlayer());
+            System.out.println("\tNb Troupes initial : " + allModes.get(0).getNbInitTroops());
+
+            for(int n = 1; n <= allModes.get(0).getNbPlayer(); n++){
+
+                // Add players to the map
+                mapObj.addPlayer(new Player("Player"+ n, n));
+
+            }
+
+
 
         } catch (Exception ex) {
             ex.printStackTrace();

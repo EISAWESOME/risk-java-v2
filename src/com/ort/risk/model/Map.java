@@ -33,7 +33,12 @@ public class Map {
 	 * Every moves possible
 	 */
 	private List<Mode> modes = new ArrayList<Mode>();
-	
+
+	/**
+	 * All players with their turn order
+	 */
+	private List<Player> playerList = new ArrayList<Player>();
+
 	/**
 	 * Minimum number of reinforcement per tour
 	 */
@@ -142,13 +147,29 @@ public class Map {
 	public void setDivider(int divider) {
 		this.divider = divider;
 	}
-	
+
+	/**
+	 *
+	 * @return the player list
+	 */
+	public List<Player> getPlayerList(){ return this.playerList;}
+
+	public void setPlayerList(List<Player> playerList){
+		this.playerList = playerList;
+	}
+
+	public void addPlayer(Player player){
+		this.playerList.add(player);
+	}
 	
 	/**
 	 * Printer of Map
 	 * @return String representation of this Map
 	 */
 
+	/**
+	 * Singleton
+	 */
 	private Map()
 	{}
 
