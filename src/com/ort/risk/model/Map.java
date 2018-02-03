@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author tibo
+ *  + un petit peu clément wallah
  * Define a map
  */
 public class Map {
@@ -84,6 +85,13 @@ public class Map {
 	public void setZones(List<Zone> zones) {
 		this.zones = zones;
 	}
+
+    /**
+     * @param zone the zones to add
+     */
+    public void addZone(Zone zone) {
+        this.zones.add(zone);
+    }
 
 	/**
 	 * @return the modes
