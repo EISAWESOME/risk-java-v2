@@ -34,6 +34,7 @@ public class app {
         Map mapObj = new Map();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
+        /* TODO : La map doit etre importer d'apres un input de l'utilisateur, pas en dur*/
         String mapPath = "resources/map/classic.xml";
 
         try {
@@ -44,18 +45,55 @@ public class app {
             XPathFactory xpf = XPathFactory.newInstance();
             XPath path = xpf.newXPath();
 
-            //Set Map's name
-            setMapName(mapObj,path, root);
+            //Set map's Img, name, minimal and divider
+            setMapParams(mapObj, path, root);
 
-            //Set map's Img
-            setMapImg(mapObj, path, root);
+            //Set map's modes
+            setMapModes(mapObj, path, root);
 
+            /* TODO : A ce moment, l'utilisateur choisis le mode qu'il souhaite jouer, on crée alors le bon nombre d'objet Player en conséquence*/
+
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+
+    protected static void setMapParams(Map mapObj, XPath path, Element root){
+        try {
+
+            // Set the map's name
+            String nameStr = (String) path.evaluate("/map/name", root);
+            mapObj.setName(nameStr);
+
+            //Set the map's img url
+            String imgStr = (String)path.evaluate("/map/image", root);
+            mapObj.setImg(imgStr);
+
+
+            //Set the map's minimal reinforcment
+            Integer nbMin = Integer.parseInt(path.evaluate("/map/minimal", root));
+            mapObj.setNbMinReinforcement(nbMin);
+
+            //Set the map's divider
+            Integer nbDiv = Integer.parseInt(path.evaluate("/map/divisor", root));
+            mapObj.setDivider(nbDiv);
+
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
+
+    protected static void setMapModes(Map mapObj, XPath path, Element root){
+
+        try {
             //Get all <mode> from <modes>
             String modesExpr = "modes//mode";
-            NodeList modesList = (NodeList)path.evaluate(modesExpr, root, XPathConstants.NODESET);
+            NodeList modesList = (NodeList) path.evaluate(modesExpr, root, XPathConstants.NODESET);
 
             //For each <mode>
-            for(int i = 0 ; i < modesList.getLength(); i++){
+            for (int i = 0; i < modesList.getLength(); i++) {
                 Mode objMode = new Mode();
                 Node mode = modesList.item(i);
 
@@ -70,38 +108,10 @@ public class app {
                 //Add the mode to the map object
                 mapObj.addMode(objMode);
             }
-
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    protected static void setMapName(Map mapObj, XPath path, Element root){
-        try {
-            // Set the map's name
-            String nameExpr = "/map/name";
-            String nameStr = (String) path.evaluate(nameExpr, root);
-            mapObj.setName(nameStr);
-
-            // System.out.println(mapObj.getName());
         } catch(Exception ex){
             ex.printStackTrace();
         }
 
-    }
-
-
-    protected static void setMapImg(Map mapObj, XPath path, Element root){
-        try {
-            //Set the map's img url
-            String imgExpr = "/map/image";
-            String imgStr = (String)path.evaluate(imgExpr, root);
-            mapObj.setImg(imgStr);
-
-            // System.out.println(mapObj.getImg());
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
 
     }
 
