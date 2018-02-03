@@ -53,6 +53,10 @@ public class app {
 
             /* TODO : A ce moment, l'utilisateur choisis le mode qu'il souhaite jouer, on crée alors le bon nombre d'objet Player en conséquence*/
 
+            //Set map's zone, that's the big boy function
+            setMapZones(mapObj, path, root);
+
+
         } catch(Exception ex){
             ex.printStackTrace();
         }
@@ -72,11 +76,11 @@ public class app {
 
 
             //Set the map's minimal reinforcment
-            Integer nbMin = Integer.parseInt(path.evaluate("/map/minimal", root));
+            Integer nbMin = Integer.parseInt((path.evaluate("/map/minimal", root)).trim());
             mapObj.setNbMinReinforcement(nbMin);
 
             //Set the map's divider
-            Integer nbDiv = Integer.parseInt(path.evaluate("/map/divisor", root));
+            Integer nbDiv = Integer.parseInt((path.evaluate("/map/divisor", root)).trim());
             mapObj.setDivider(nbDiv);
 
         } catch(Exception ex){
@@ -98,15 +102,64 @@ public class app {
                 Node mode = modesList.item(i);
 
                 //Set number of player
-                Integer nbPlayers = Integer.parseInt(path.evaluate("players", mode));
+                Integer nbPlayers = Integer.parseInt((path.evaluate("players", mode)).trim());
                 objMode.setNbPlayer(nbPlayers);
 
                 //Set the number of init troops
-                Integer nbInit = Integer.parseInt(path.evaluate("initial", mode));
+                Integer nbInit = Integer.parseInt((path.evaluate("initial", mode)).trim());
                 objMode.setNbInitTroops(nbInit);
 
                 //Add the mode to the map object
+                //mapObj.toString();
                 mapObj.addMode(objMode);
+            }
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+
+    }
+
+
+    protected static void setMapZones(Map mapObj, XPath path, Element root){
+
+        try {
+            //Get all <zone> from <zones>
+            String zonesExpr = "zones//zone";
+            NodeList zonesList = (NodeList) path.evaluate(zonesExpr, root, XPathConstants.NODESET);
+
+            //For each <zone>
+            for (int i = 0; i < zonesList.getLength(); i++) {
+                Zone objZone = new Zone();
+                Node zone = zonesList.item(i);
+
+                //Set zone's name
+                String zName = path.evaluate("name", zone);
+                objZone.setName(zName);
+
+                //Set zone's bonus
+                Integer zBonus = Integer.parseInt((path.evaluate("bonus", zone)).trim());
+                objZone.setBonus(zBonus);
+
+                NodeList regionList = (NodeList)path.evaluate("regions/region", zone, XPathConstants.NODESET);
+
+                // For each zone's region
+                for(int j = 0; j < regionList.getLength(); j++){
+                    Node region = regionList.item(j);
+                    Region objRegion = new Region();
+
+                    //Set region's name
+                    String rName = path.evaluate("name", region);
+                    objRegion.setName(rName);
+
+                    //System.out.println(region.getNodeName() + " : " + region.getTextContent());
+
+                    //Look for region's corresponding adjacency object
+
+
+                }
+
+
             }
         } catch(Exception ex){
             ex.printStackTrace();
