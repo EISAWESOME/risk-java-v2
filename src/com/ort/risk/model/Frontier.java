@@ -3,6 +3,7 @@
  */
 package com.ort.risk.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class Frontier {
 	/**
 	 * Possible moves
 	 */
-	private List<Move> moves;
+	private List<Move> moves = new ArrayList<Move>();
 
 	
 	/**
@@ -49,6 +50,13 @@ public class Frontier {
 	 */
 	public void setMoves(List<Move> moves) {
 		this.moves = moves;
+	}
+
+	/**
+	 * @param move add a move to the moves list
+	 */
+	public void addMove(Move move) {
+		this.moves.add(move);
 	}
 	
 	

@@ -3,6 +3,7 @@
  */
 package com.ort.risk.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public class Zone {
 	/**
 	 * Every region in the zone
 	 */
-	private List<Region> regions;
+	private List<Region> regions = new ArrayList<Region>();
 
 	
 	/**
@@ -68,6 +69,14 @@ public class Zone {
 	 */
 	public void setRegions(List<Region> regions) {
 		this.regions = regions;
+	}
+
+
+	/**
+	 * @param region add a region to the region list
+	 */
+	public void addRegion(Region region) {
+		this.regions.add(region);
 	}
 	
 	

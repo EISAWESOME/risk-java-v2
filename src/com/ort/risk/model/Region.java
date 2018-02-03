@@ -3,6 +3,7 @@
  */
 package com.ort.risk.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,12 +21,12 @@ public class Region {
 	/**
 	 * Bonus given by the region
 	 */
-	private int bonus;
+	private Integer bonus;
 	
 	/**
 	 * Every frontier of the region
 	 */
-	private List<Frontier> frontiers;
+	private List<Frontier> frontiers = new ArrayList<Frontier>();
 
 	
 	/**
@@ -52,7 +53,7 @@ public class Region {
 	/**
 	 * @param bonus the bonus to set
 	 */
-	public void setBonus(int bonus) {
+	public void setBonus(Integer bonus) {
 		this.bonus = bonus;
 	}
 
@@ -68,6 +69,14 @@ public class Region {
 	 */
 	public void setFrontiers(List<Frontier> frontiers) {
 		this.frontiers = frontiers;
+	}
+
+
+	/**
+	 * @param frontier add a frontier to the frontiers list
+	 */
+	public void addFrontier(Frontier frontier) {
+		this.frontiers.add(frontier);
 	}
 	
 	
