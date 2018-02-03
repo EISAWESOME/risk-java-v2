@@ -86,17 +86,24 @@ public class Map {
 	}
 
 	/**
-	 * @return the moves
+	 * @return the modes
 	 */
 	public List<Mode> getModes() {
 		return modes;
 	}
 
 	/**
-	 * @param moves the moves to set
+	 * @param modes the moves to set
 	 */
-	public void setMoves(List<Mode> modes) {
+	public void setModes(List<Mode> modes) {
 		this.modes = modes;
+	}
+
+	/**
+	 * @param mode add a mode to the existing list
+	 */
+	public void addMode(Mode mode) {
+		this.modes.add(mode);
 	}
 
 	/**
