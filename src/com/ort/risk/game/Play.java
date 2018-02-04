@@ -13,7 +13,7 @@ import java.io.IOException;
 
 
 
-public class play {
+public class Play {
 
     public static void GameLoop() {
         Map mapObj = Map.getInstance();
@@ -40,7 +40,7 @@ public class play {
 
             validPlayerList.forEach((player) -> {
                 //Player take turn
-                turn.TakeTurn(player);
+                Turn.TakeTurn(player);
 
 
             });

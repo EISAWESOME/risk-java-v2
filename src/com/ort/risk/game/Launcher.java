@@ -1,16 +1,16 @@
 package com.ort.risk.game;
 
-public class launcher {
+public class Launcher {
     public static void main(String[] args){
 
         // Parse XML file into Map object
-        parser.prepMap();
+        Parser.prepMap();
 
         //Mode selection, and regions repartitions between the players
-        play.InitDeployment();
+        Play.InitDeployment();
 
         //Main loop
-        play.GameLoop();
+        Play.GameLoop();
 
     }
 }

@@ -6,7 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class turn {
+public class Turn {
     public static void TakeTurn(Player currentPlayer){
         Map mapObj = Map.getInstance();
         currentPlayer.executeDeployment();
@@ -22,7 +22,7 @@ public class turn {
                 System.out.println("===========================================");
                 System.out.println("===========================================");
                 System.out.println("\n");
-                play.printPlayerRegions();
+                Play.printPlayerRegions();
                 System.out.println("\n");
                 System.out.println("===========================================");
                 System.out.println("===========================================");
