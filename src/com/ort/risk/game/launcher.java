@@ -1,10 +1,14 @@
 package com.ort.risk.game;
 
+/**
+ * @author CS
+ * Launcher of the app
+ */
 public class launcher {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Integer ExecMode;
 
-        switch(args[0]){
+        switch (args[0]) {
             //Mode console
             case "-c":
                 ExecMode = 0;

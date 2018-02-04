@@ -23,6 +23,7 @@ import org.w3c.dom.NodeList;
 
 /**
  * @author CS
+ * Parse the XML file into the Map object
  */
 public class parser {
     public static void prepMap() {
