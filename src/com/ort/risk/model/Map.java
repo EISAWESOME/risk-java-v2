@@ -3,11 +3,13 @@
  */
 package com.ort.risk.model;
 
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * @author tibo
+ *  + un petit peu clément wallah
  * Define a map
  */
 public class Map {
@@ -25,13 +27,22 @@ public class Map {
 	/**
 	 * Every zones in the map
 	 */
-	private List<Zone> zones;
-	
+	private List<Zone> zones = new ArrayList<Zone>();
+
+    /**
+     * Every regions of every zones of the map
+     */
+    private List<Region> regions = new ArrayList<Region>();
 	/**
 	 * Every moves possible
 	 */
-	private List<Mode> modes;
-	
+	private List<Mode> modes = new ArrayList<Mode>();
+
+	/**
+	 * All players with their turn order
+	 */
+	private List<Player> playerList = new ArrayList<Player>();
+
 	/**
 	 * Minimum number of reinforcement per tour
 	 */
@@ -85,18 +96,54 @@ public class Map {
 		this.zones = zones;
 	}
 
+    /**
+     * @param zone the zones to add
+     */
+    public void addZone(Zone zone) {
+        this.zones.add(zone);
+    }
+
+
+    /**
+     * @return the zones
+     */
+    public List<Region> getRegions() {
+        return regions;
+    }
+
+    /**
+     * @param regions the regions to set
+     */
+    public void setRegions(List<Region> regions) {
+        this.regions = regions;
+    }
+
+    /**
+     * @param region the region to add
+     */
+    public void addRegion(Region region) {
+        this.regions.add(region);
+    }
+
 	/**
-	 * @return the moves
+	 * @return the modes
 	 */
 	public List<Mode> getModes() {
 		return modes;
 	}
 
 	/**
-	 * @param moves the moves to set
+	 * @param modes the moves to set
 	 */
-	public void setMoves(List<Mode> modes) {
+	public void setModes(List<Mode> modes) {
 		this.modes = modes;
+	}
+
+	/**
+	 * @param mode add a mode to the existing list
+	 */
+	public void addMode(Mode mode) {
+		this.modes.add(mode);
 	}
 
 	/**
@@ -126,12 +173,38 @@ public class Map {
 	public void setDivider(int divider) {
 		this.divider = divider;
 	}
-	
+
+	/**
+	 *
+	 * @return the player list
+	 */
+	public List<Player> getPlayerList(){ return this.playerList;}
+
+	public void setPlayerList(List<Player> playerList){
+		this.playerList = playerList;
+	}
+
+	public void addPlayer(Player player){
+		this.playerList.add(player);
+	}
 	
 	/**
 	 * Printer of Map
 	 * @return String representation of this Map
 	 */
+
+	/**
+	 * Singleton
+	 */
+	private Map()
+	{}
+
+	private static Map INSTANCE = new Map();
+
+	public static Map getInstance(){
+		return INSTANCE;
+	}
+
 	public String toString() {
 		return String.format(
 				"%s - [ name = %s, img = %s, nbMinReinforcement = %d, divider = %d, modes = [ %s ], zones = [ %s ] ]",

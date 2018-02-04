@@ -3,6 +3,7 @@
  */
 package com.ort.risk.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,12 +21,16 @@ public class Region {
 	/**
 	 * Bonus given by the region
 	 */
-	private int bonus;
+	private Integer bonus;
 	
 	/**
 	 * Every frontier of the region
 	 */
-	private List<Frontier> frontiers;
+	private List<Frontier> frontiers = new ArrayList<Frontier>();
+
+	private boolean isOccupied = false;
+
+	private int deployedTroops = 0;
 
 	
 	/**
@@ -52,7 +57,7 @@ public class Region {
 	/**
 	 * @param bonus the bonus to set
 	 */
-	public void setBonus(int bonus) {
+	public void setBonus(Integer bonus) {
 		this.bonus = bonus;
 	}
 
@@ -69,7 +74,35 @@ public class Region {
 	public void setFrontiers(List<Frontier> frontiers) {
 		this.frontiers = frontiers;
 	}
-	
+
+
+	/**
+	 * @param frontier add a frontier to the frontiers list
+	 */
+	public void addFrontier(Frontier frontier) {
+		this.frontiers.add(frontier);
+	}
+
+	public boolean getIsOccupied(){
+		return this.isOccupied;
+	}
+
+	public void setIsOccupied(boolean state){
+		this.isOccupied = state;
+	}
+
+
+	public int getDeployedTroops(){
+		return this.deployedTroops;
+	}
+
+	public void setDeployedTroops(int troops){
+		this.deployedTroops = troops;
+	}
+
+	public void changeDeployedTroops(int troops){
+		this.deployedTroops += troops;
+	}
 	
 	/**
 	 * Printer of Region

@@ -16,7 +16,11 @@ public class Mode {
 	 * Number of troops per player at the start of the game
 	 */
 	private int nbInitTroops;
-	
+
+	/**
+	 * Signal if the mode is selected for the current game
+	 */
+	private boolean isSelected = false;
 	
 	/**
 	 * @return the nbPlayer
@@ -44,6 +48,22 @@ public class Mode {
 	 */
 	public void setNbInitTroops(int nbInitTroops) {
 		this.nbInitTroops = nbInitTroops;
+	}
+
+	/**
+	 *
+	 * @return the state of the mode's selection
+	 */
+	public boolean getIsSelected(){
+		return isSelected;
+	}
+
+	/**
+	 *
+	 * @param state the state to set the flag to
+	 */
+	public void setIsSelected(boolean state){
+		this.isSelected = state;
 	}
 	
 	

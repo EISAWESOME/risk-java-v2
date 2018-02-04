@@ -3,6 +3,7 @@
  */
 package com.ort.risk.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,26 +16,26 @@ public class Frontier {
 	/**
 	 * Concerned region
 	 */
-	private Region regionEnd;
+	private String regionEndName;
 	
 	/**
 	 * Possible moves
 	 */
-	private List<Move> moves;
+	private List<Move> moves = new ArrayList<Move>();
 
 	
 	/**
 	 * @return the regionEnd
 	 */
-	public Region getRegionEnd() {
-		return regionEnd;
+	public String getRegionEndName() {
+		return regionEndName;
 	}
 
 	/**
-	 * @param regionEnd the regionEnd to set
+	 * @param regionEndName the regionEnd to set
 	 */
-	public void setRegionEnd(Region regionEnd) {
-		this.regionEnd = regionEnd;
+	public void setRegionEnd(String regionEndName) {
+		this.regionEndName = regionEndName;
 	}
 
 	/**
@@ -50,6 +51,13 @@ public class Frontier {
 	public void setMoves(List<Move> moves) {
 		this.moves = moves;
 	}
+
+	/**
+	 * @param move add a move to the moves list
+	 */
+	public void addMove(Move move) {
+		this.moves.add(move);
+	}
 	
 	
 	/**
@@ -59,7 +67,7 @@ public class Frontier {
 	public String toString() {
 		return String.format(
 				"%s - [ regionEnd = %s, moves = [ %s ] ]",
-				this.getClass().getName(), regionEnd.toString(),
+				this.getClass().getName(), regionEndName,
 				moves.stream().map(Move::toString).collect(Collectors.joining(", ")));
 	}
 	
