@@ -9,22 +9,33 @@ import java.io.InputStreamReader;
 public class turn {
     public static void TakeTurn(Player currentPlayer){
         Map mapObj = Map.getInstance();
-
-        /* TODO : Choix d'une region possédé -> GUI */
-        //Chosing a random controlled region
-
-        int rand =  (int)(Math.random() * currentPlayer.getControlledRegions().size());
-        Region t = currentPlayer.getControlledRegions().get(rand);
-
-        currentPlayer.executeDeployment(t);
+        currentPlayer.executeDeployment();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Fin du tour de " + currentPlayer.getName());
+        System.out.println("Entrez 'e' pour voir les regions controllées par les joueurs ");
+        System.out.println("Et le nombre de troupes deployés");
         try{
             String s = br.readLine();
+            if(s.equals("e")){
+                System.out.println("\n");
+                System.out.println("===========================================");
+                System.out.println("===========================================");
+                System.out.println("\n");
+                play.printPlayerRegions();
+                System.out.println("\n");
+                System.out.println("===========================================");
+                System.out.println("===========================================");
+                System.out.println("\n");
+
+                System.out.println("--Appuyez sur une touche pour revenir au jeu--");
+                br.readLine();
+            }
         } catch(Exception ex){
 
         }
+
+
 
 
 

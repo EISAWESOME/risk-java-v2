@@ -74,11 +74,10 @@ public class Player {
 
 
 
-	public void executeDeployment(Region target){
+	public void executeDeployment(){
 		//If the target region is controlled by the player
-		if(this.getControlledRegions().contains(target)){
-			Deployment.execute(this, target);
-		}
+			Deployment.execute(this);
+
 
 	}
 }

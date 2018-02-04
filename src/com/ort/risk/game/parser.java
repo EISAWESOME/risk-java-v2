@@ -40,7 +40,6 @@ public class parser {
             XPathFactory xpf = XPathFactory.newInstance();
             XPath path = xpf.newXPath();
 
-            String[] guiArgs = new String[5];
             //Set map's Img, name, minimal and divider
             setMapParams(mapObj, path, root);
 
@@ -59,84 +58,6 @@ public class parser {
             //Here we got a complete map object, and ready to play
             //System.out.println(mapObj.toString());
 
-
-            System.out.println(
-                    "__________.___  _____________  __.\n" +
-                    "\\______   \\   |/   _____/    |/ _|\n" +
-                    " |       _/   |\\_____  \\|      <  \n" +
-                    " |    |   \\   |/        \\    |  \\ \n" +
-                    " |____|_  /___/_______  /____|__ \\\n" +
-                    "        \\/            \\/        \\/");
-
-            List<Mode> allModes = mapObj.getModes();
-            allModes.get(0).setIsSelected(true);
-
-            System.out.println("Mode selectionné : ");
-            System.out.println("\tNb player : " + allModes.get(0).getNbPlayer());
-            System.out.println("\tNb Troupes initial : " + allModes.get(0).getNbInitTroops());
-            System.out.println("\n");
-
-            System.out.println("Liste des joueurs : ");
-            int nbTroupePerPlayer = allModes.get(0).getNbInitTroops();
-            for(int n = 1; n <= allModes.get(0).getNbPlayer(); n++){
-
-                // Add players to the map
-                mapObj.addPlayer(new Player("Player"+ n, n, nbTroupePerPlayer));
-
-                System.out.println("\tNom : " + "Player"+ n);
-                System.out.println("\tOrdre de passage : " + n);
-
-            }
-
-            //Regions' attribution
-            //Filter to get only the not occupied regions
-            List<Region> notOccupiedRegions = mapObj.getRegions().stream()
-                    .filter(p -> !p.getIsOccupied()).collect(Collectors.toList());
-
-            while(notOccupiedRegions.size() >= allModes.get(0).getNbPlayer()) {
-                for(int p = 0; p < mapObj.getPlayerList().size(); p++){
-                    int rand =  (int)(Math.random() * notOccupiedRegions.size());
-
-                    //Both region and zone list references the same region objects
-                    //Hence, change flags in the region list would change them in the zone list too
-
-
-                    notOccupiedRegions.get(rand).setDeployedTroops(1);
-                    mapObj.getPlayerList().get(p).changeNbTroupes(-1);
-
-                    mapObj.getPlayerList().get(p).addControlledRegion(notOccupiedRegions.get(rand));
-                    notOccupiedRegions.get(rand).setIsOccupied(true);
-
-                    notOccupiedRegions = notOccupiedRegions.stream()
-                            .filter(po -> !po.getIsOccupied() ).collect(Collectors.toList());
-                }
-
-
-            }
-
-            //Initial deployment
-            /* TODO  : A CHANGER - Le déploiement se fait de façon random, en attendant l'interface graphique */
-            for(int q = 0; q < mapObj.getPlayerList().size(); q++){
-                Player currentPlayer = mapObj.getPlayerList().get(q);
-                while(currentPlayer.getNbTroops() > 0){
-                    int rand =  (int)(Math.random() * currentPlayer.getControlledRegions().size());
-                    currentPlayer.getControlledRegions().get(rand).changeDeployedTroops(1);
-                    currentPlayer.changeNbTroupes(-1);
-                }
-            }
-
-
-
-
-            for(int pq = 0; pq < mapObj.getPlayerList().size(); pq++){
-                System.out.println(mapObj.getPlayerList().get(pq).getName());
-                List<Region> playerRegion = mapObj.getPlayerList().get(pq).getControlledRegions();
-                for(int pr =0; pr < playerRegion.size(); pr++){
-                    System.out.println("\t" + playerRegion.get(pr).getName()  + " : " + playerRegion.get(pr).getDeployedTroops() );
-
-                }
-
-            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
