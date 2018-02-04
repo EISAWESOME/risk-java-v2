@@ -3,9 +3,8 @@
  */
 package com.ort.risk.model;
 
-
+import com.ort.risk.game.actions.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -17,7 +16,7 @@ public class Player {
 
 	private String name;
 	private int order;
-	private int nbTroupes;
+	private int nbTroops;
 
 	private List<Region> controlledRegions  = new ArrayList<Region>();
 
@@ -38,16 +37,16 @@ public class Player {
 		return this.order;
 	}
 
-	public void setNbTroupes(int nbTroupes){
-		this.nbTroupes = nbTroupes;
+	public void setNbTroops(int nbTroops){
+		this.nbTroops = nbTroops;
 	}
 
-	public void changeNbTroupes(int nbTroupes){
-		this.nbTroupes += nbTroupes;
+	public void changeNbTroupes(int nbTroops){
+		this.nbTroops += nbTroops;
 	}
 
-	public int getNbTroupes(){
-		return this.nbTroupes;
+	public int getNbTroops(){
+		return this.nbTroops;
 	}
 
 	public List<Region> getControlledRegions(){
@@ -67,9 +66,18 @@ public class Player {
 
 	}
 
-	public Player(String name, int order, int nbTroupes) {
+	public Player(String name, int order, int nbTroops) {
 		this.name = name;
 		this.order = order;
-		this.nbTroupes = nbTroupes;
+		this.nbTroops = nbTroops;
+	}
+
+
+
+	public void executeDeployment(){
+		//If the target region is controlled by the player
+			Deployment.execute(this);
+
+
 	}
 }

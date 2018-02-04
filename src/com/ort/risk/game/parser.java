@@ -2,20 +2,16 @@ package com.ort.risk.game;
 
 import com.ort.risk.model.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 
@@ -23,14 +19,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 
 /**
  * @author CS
  */
-public class app {
-    public static void main(String[] args) {
+public class parser {
+    public static void prepMap() {
         Map mapObj = Map.getInstance();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -45,7 +40,6 @@ public class app {
             XPathFactory xpf = XPathFactory.newInstance();
             XPath path = xpf.newXPath();
 
-            String[] guiArgs = new String[5];
             //Set map's Img, name, minimal and divider
             setMapParams(mapObj, path, root);
 
@@ -63,90 +57,6 @@ public class app {
 
             //Here we got a complete map object, and ready to play
             //System.out.println(mapObj.toString());
-
-
-            System.out.println(
-                    "__________.___  _____________  __.\n" +
-                    "\\______   \\   |/   _____/    |/ _|\n" +
-                    " |       _/   |\\_____  \\|      <  \n" +
-                    " |    |   \\   |/        \\    |  \\ \n" +
-                    " |____|_  /___/_______  /____|__ \\\n" +
-                    "        \\/            \\/        \\/");
-
-            List<Mode> allModes = mapObj.getModes();
-            allModes.get(0).setIsSelected(true);
-
-            System.out.println("Mode selectionné : ");
-            System.out.println("\tNb player : " + allModes.get(0).getNbPlayer());
-            System.out.println("\tNb Troupes initial : " + allModes.get(0).getNbInitTroops());
-            System.out.println("\n");
-
-            System.out.println("Liste des joueurs : ");
-            int nbTroupePerPlayer = allModes.get(0).getNbInitTroops();
-            for(int n = 1; n <= allModes.get(0).getNbPlayer(); n++){
-
-                // Add players to the map
-                mapObj.addPlayer(new Player("Player"+ n, n, nbTroupePerPlayer));
-
-                System.out.println("\tNom : " + "Player"+ n);
-                System.out.println("\tOrdre de passage : " + n);
-
-            }
-
-            //Regions' attribution
-            //Filter to get only the not occupied regions
-            List<Region> notOccupiedRegions = mapObj.getRegions().stream()
-                    .filter(p -> !p.getIsOccupied()).collect(Collectors.toList());
-
-            while(notOccupiedRegions.size() >= allModes.get(0).getNbPlayer()) {
-                for(int p = 0; p < mapObj.getPlayerList().size(); p++){
-                    int rand =  (int)(Math.random() * notOccupiedRegions.size());
-
-                    //Both region and zone list references the same region objects
-                    //Hence, change flags in the region list would change them in the zone list too
-
-
-                    notOccupiedRegions.get(rand).setDeployedTroops(1);
-                    mapObj.getPlayerList().get(p).changeNbTroupes(-1);
-
-                    mapObj.getPlayerList().get(p).addControlledRegion(notOccupiedRegions.get(rand));
-                    notOccupiedRegions.get(rand).setIsOccupied(true);
-
-                    notOccupiedRegions = notOccupiedRegions.stream()
-                            .filter(po -> !po.getIsOccupied() ).collect(Collectors.toList());
-                }
-
-
-            }
-
-            //Initial deployment
-            /* TODO  : A CHANGER - Le déploiement se fait de façon random, en attendant l'interface graphique */
-            for(int q = 0; q < mapObj.getPlayerList().size(); q++){
-                Player currentPlayer = mapObj.getPlayerList().get(q);
-                while(currentPlayer.getNbTroupes() > 0){
-                    int rand =  (int)(Math.random() * currentPlayer.getControlledRegions().size());
-                    currentPlayer.getControlledRegions().get(rand).changeDeployedTroops(1);
-                    currentPlayer.changeNbTroupes(-1);
-                }
-            }
-
-
-
-
-            for(int pq = 0; pq < mapObj.getPlayerList().size(); pq++){
-                System.out.println(mapObj.getPlayerList().get(pq).getName());
-                List<Region> playerRegion = mapObj.getPlayerList().get(pq).getControlledRegions();
-                for(int pr =0; pr < playerRegion.size(); pr++){
-                    System.out.println("\t" + playerRegion.get(pr).getName() /* + " : " + playerRegion.get(pr).getDeployedTroops() */);
-
-                }
-
-            }
-
-
-
-
-
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -231,17 +141,30 @@ public class app {
                 Integer zBonus = Integer.parseInt((path.evaluate("bonus", zone)).trim());
                 objZone.setBonus(zBonus);
 
-                NodeList regionList = (NodeList) path.evaluate("regions/region", zone, XPathConstants.NODESET);
+                NodeList zoneRegionList = (NodeList) path.evaluate("regions/region", zone, XPathConstants.NODESET);
 
                 // For each zone's region
-                for (int j = 0; j < regionList.getLength(); j++) {
-                    Node region = regionList.item(j);
+                for (int j = 0; j < zoneRegionList.getLength(); j++) {
+                    Node region = zoneRegionList.item(j);
                     Region objRegion = new Region();
                     objRegion.setIsOccupied(false);
 
                     //Set region's name
                     String rName = path.evaluate("name", region).trim();
-                    objRegion.setName(rName);
+
+
+                    //Get the regions from the <map><regions><region> so we can get <bonus>
+                    NodeList regionRoot = (NodeList) path.evaluate("regions/region", root, XPathConstants.NODESET);
+                    for (int mr = 0; mr < regionRoot.getLength(); mr++) {
+                        Node matchedRegion = regionRoot.item(mr);
+                        String matchedRegionName = path.evaluate("name", matchedRegion).trim();
+                        String matchedRegionBonus = path.evaluate("bonus", matchedRegion).trim();
+                        if (matchedRegionName.trim().equals(rName)) {
+                            objRegion.setName(matchedRegionName);
+                            objRegion.setBonus(Integer.parseInt(matchedRegionBonus));
+                        }
+                    }
+
 
                     //System.out.println(region.getNodeName() + " : " + region.getTextContent());
 
@@ -300,22 +223,13 @@ public class app {
 
                             objZone.addRegion(objRegion);
                             mapObj.addRegion(objRegion);
-
-
                         }
-
                     }
-
-
                 }
-
                 mapObj.addZone(objZone);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-
     }
-
 }
