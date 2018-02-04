@@ -2,6 +2,8 @@ package com.ort.risk.game;
 
 import com.ort.risk.model.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -14,6 +16,21 @@ import java.io.IOException;
 
 
 public class play {
+
+
+    enum ExecMode{
+        CONSOLE(0),
+        RANDOM(1),
+        GUI(2);
+
+        private final int value;
+
+        ExecMode(int value)
+        { this.value = value; }
+
+        public int value(){ return this.value; }
+
+    }
 
     public static void GameLoop() {
         Map mapObj = Map.getInstance();
@@ -54,8 +71,9 @@ public class play {
         }
     }
 
-    public static void InitDeployment(){
+    public static void InitDeployment(int exMode){
         Map mapObj = Map.getInstance();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println(
                         "__________.___  _____________  __.\n" +
@@ -66,16 +84,56 @@ public class play {
                         "        \\/            \\/        \\/");
 
         List<Mode> allModes = mapObj.getModes();
-        allModes.get(0).setIsSelected(true);
+        int selectedModeIndex = 0;
+
+        //Random mode
+        if(exMode == ExecMode.RANDOM.value()){
+            //selectedModeIndex = (int)(Math.random() * allModes.size());
+            selectedModeIndex = 3;
+        }
+
+
+        //Console mode
+        if(exMode == ExecMode.CONSOLE.value() ){
+            System.out.println("Modes disponibles : ");
+            for(int ci = 0; ci < allModes.size(); ci++){
+                Mode curMode = allModes.get(ci);
+                System.out.println("[" + ci + "]");
+                System.out.println("\t Nb joueur : " + curMode.getNbPlayer());
+                System.out.println("\t Nb troupes initial : " + curMode.getNbInitTroops());
+
+            }
+            try{
+                do{
+                    System.out.println("Choix du mode ? ");
+                    selectedModeIndex = Integer.parseInt(br.readLine());
+                } while(selectedModeIndex > allModes.size() || selectedModeIndex < 0);
+
+
+
+            } catch(Exception ex){
+
+            }
+        }
+
+        if(exMode == ExecMode.GUI.value){
+
+            /* TODO : Input utilisateur via GUI*/
+            selectedModeIndex = (int)(Math.random() * allModes.size());
+        }
+
+
+
+        allModes.get(selectedModeIndex).setIsSelected(true);
 
         System.out.println("Mode selectionné : ");
-        System.out.println("\tNb player : " + allModes.get(0).getNbPlayer());
-        System.out.println("\tNb Troupes initial : " + allModes.get(0).getNbInitTroops());
+        System.out.println("\tNb player : " + allModes.get(selectedModeIndex).getNbPlayer());
+        System.out.println("\tNb Troupes initial : " + allModes.get(selectedModeIndex).getNbInitTroops());
         System.out.println("\n");
 
         System.out.println("Liste des joueurs : ");
-        int nbTroupePerPlayer = allModes.get(0).getNbInitTroops();
-        for(int n = 1; n <= allModes.get(0).getNbPlayer(); n++){
+        int nbTroupePerPlayer = allModes.get(selectedModeIndex).getNbInitTroops();
+        for(int n = 1; n <= allModes.get(selectedModeIndex).getNbPlayer(); n++){
 
             // Add players to the map
             mapObj.addPlayer(new Player("Player"+ n, n, nbTroupePerPlayer));
@@ -84,28 +142,66 @@ public class play {
             System.out.println("\tOrdre de passage : " + n);
         }
 
+        if(exMode == ExecMode.CONSOLE.value() ) {
+            System.out.println("\n\n==================================================================================================================");
+            System.out.println("\t\t Deploiement initial, les joueurs choissisent une région non occupée chacun leur tour !");
+            System.out.println("==================================================================================================================\n\n");
+        }
+
         //Regions' attribution
         //Filter to get only the not occupied regions
         List<Region> notOccupiedRegions = mapObj.getRegions().stream()
                 .filter(p -> !p.getIsOccupied()).collect(Collectors.toList());
 
-        while(notOccupiedRegions.size() >= allModes.get(0).getNbPlayer()) {
+        while(notOccupiedRegions.size() > allModes.get(0).getNbPlayer()) {
             for(int p = 0; p < mapObj.getPlayerList().size(); p++){
-                /* TODO  : A CHANGER - Le déploiement se fait de façon random, en attendant l'interface graphique */
-                int rand =  (int)(Math.random() * notOccupiedRegions.size());
+                int selectedRegionIndex = 0;
+                //Random mode
+                if(exMode == ExecMode.RANDOM.value()) {
+                     selectedRegionIndex = (int) (Math.random() * notOccupiedRegions.size());
+                }
 
+                //Console mode
+                if(exMode == ExecMode.CONSOLE.value()){
+                    System.out.println("\tCHOIX DU JOUEUR " + mapObj.getPlayerList().get(p).getName());
+                    for(int nor = 0; nor < notOccupiedRegions.size(); nor++){
+                        System.out.println("["+ nor +"]" + notOccupiedRegions.get(nor).getName());
+                    }
+                    try{
+                        do{
+                            System.out.println("Choix de la region ? ");
+                            selectedRegionIndex = Integer.parseInt(br.readLine());
+                        } while(selectedRegionIndex > notOccupiedRegions.size() || selectedRegionIndex < 0);
+
+
+
+                    } catch(Exception ex){
+
+                    }
+                }
+
+                if(exMode == ExecMode.GUI.value()){
+                    /* TODO : Input GUI */
+                    selectedRegionIndex = (int) (Math.random() * notOccupiedRegions.size());
+                }
                 //Both region and zone list references the same region objects
                 //Hence, change flags in the region list would change them in the zone list too
-                notOccupiedRegions.get(rand).setDeployedTroops(1);
+                notOccupiedRegions.get(selectedRegionIndex).setDeployedTroops(1);
                 mapObj.getPlayerList().get(p).changeNbTroupes(-1);
 
-                mapObj.getPlayerList().get(p).addControlledRegion(notOccupiedRegions.get(rand));
-                notOccupiedRegions.get(rand).setIsOccupied(true);
+                mapObj.getPlayerList().get(p).addControlledRegion(notOccupiedRegions.get(selectedRegionIndex));
+                notOccupiedRegions.get(selectedRegionIndex).setIsOccupied(true);
 
                 notOccupiedRegions = notOccupiedRegions.stream()
                         .filter(po -> !po.getIsOccupied() ).collect(Collectors.toList());
             }
         }
+
+        System.out.println("\n\n==========================================================");
+        System.out.println("\t\t\tDEBUT DE LA PARTIE");
+        System.out.println("==========================================================");
+
+
 
         //Initial deployment
         /* TODO  : A CHANGER - Le déploiement se fait de façon random, en attendant l'interface graphique */
@@ -132,4 +228,5 @@ public class play {
             System.out.println("\n");
         }
     }
+
 }
