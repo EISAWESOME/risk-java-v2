@@ -42,6 +42,10 @@ public class Player {
 		this.nbTroupes = nbTroupes;
 	}
 
+	public void changeNbTroupes(int nbTroupes){
+		this.nbTroupes += nbTroupes;
+	}
+
 	public int getNbTroupes(){
 		return this.nbTroupes;
 	}

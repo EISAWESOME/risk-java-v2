@@ -65,7 +65,8 @@ public class app {
             //System.out.println(mapObj.toString());
 
 
-            System.out.println("__________.___  _____________  __.\n" +
+            System.out.println(
+                    "__________.___  _____________  __.\n" +
                     "\\______   \\   |/   _____/    |/ _|\n" +
                     " |       _/   |\\_____  \\|      <  \n" +
                     " |    |   \\   |/        \\    |  \\ \n" +
@@ -99,26 +100,45 @@ public class app {
 
             while(notOccupiedRegions.size() >= allModes.get(0).getNbPlayer()) {
                 for(int p = 0; p < mapObj.getPlayerList().size(); p++){
-                    int rand =  (int)Math.floor(Math.random() * mapObj.getPlayerList().size() *100) /100;
+                    int rand =  (int)(Math.random() * notOccupiedRegions.size());
 
                     //Both region and zone list references the same region objects
                     //Hence, change flags in the region list would change them in the zone list too
 
-                    Region newOccupiedRegion = notOccupiedRegions.get(rand);
-                    newOccupiedRegion.setIsOccupied(true);
-                    mapObj.getPlayerList().get(p).addControlledRegion(newOccupiedRegion);
+
+                    notOccupiedRegions.get(rand).setDeployedTroops(1);
+                    mapObj.getPlayerList().get(p).changeNbTroupes(-1);
+
+                    mapObj.getPlayerList().get(p).addControlledRegion(notOccupiedRegions.get(rand));
+                    notOccupiedRegions.get(rand).setIsOccupied(true);
+
+                    notOccupiedRegions = notOccupiedRegions.stream()
+                            .filter(po -> !po.getIsOccupied() ).collect(Collectors.toList());
                 }
 
-                notOccupiedRegions = notOccupiedRegions.stream()
-                        .filter(p -> !p.getIsOccupied()).collect(Collectors.toList());
+
             }
+
+            //Initial deployment
+            /* TODO  : A CHANGER - Le déploiement se fait de façon random, en attendant l'interface graphique */
+            for(int q = 0; q < mapObj.getPlayerList().size(); q++){
+                Player currentPlayer = mapObj.getPlayerList().get(q);
+                while(currentPlayer.getNbTroupes() > 0){
+                    int rand =  (int)(Math.random() * currentPlayer.getControlledRegions().size());
+                    currentPlayer.getControlledRegions().get(rand).changeDeployedTroops(1);
+                    currentPlayer.changeNbTroupes(-1);
+                }
+            }
+
+
 
 
             for(int pq = 0; pq < mapObj.getPlayerList().size(); pq++){
                 System.out.println(mapObj.getPlayerList().get(pq).getName());
                 List<Region> playerRegion = mapObj.getPlayerList().get(pq).getControlledRegions();
                 for(int pr =0; pr < playerRegion.size(); pr++){
-                    System.out.println("\t" + playerRegion.get(pr).getName());
+                    System.out.println("\t" + playerRegion.get(pr).getName() /* + " : " + playerRegion.get(pr).getDeployedTroops() */);
+
                 }
 
             }

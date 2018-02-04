@@ -30,6 +30,8 @@ public class Region {
 
 	private boolean isOccupied = false;
 
+	private int deployedTroops = 0;
+
 	
 	/**
 	 * @return the name
@@ -88,7 +90,19 @@ public class Region {
 	public void setIsOccupied(boolean state){
 		this.isOccupied = state;
 	}
-	
+
+
+	public int getDeployedTroops(){
+		return this.deployedTroops;
+	}
+
+	public void setDeployedTroops(int troops){
+		this.deployedTroops = troops;
+	}
+
+	public void changeDeployedTroops(int troops){
+		this.deployedTroops += troops;
+	}
 	
 	/**
 	 * Printer of Region
