@@ -27,7 +27,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 
-public class app {
+public class play {
 
     public static void GameLoop() {
         Map mapObj = Map.getInstance();

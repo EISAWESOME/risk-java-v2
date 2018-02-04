@@ -24,8 +24,8 @@ import org.w3c.dom.NodeList;
 /**
  * @author CS
  */
-public class prep {
-    public static void main(String[] args) {
+public class parser {
+    public static void prepMap() {
         Map mapObj = Map.getInstance();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -137,14 +137,6 @@ public class prep {
                 }
 
             }
-
-            app.GameLoop();
-
-
-
-
-
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
