@@ -1,10 +1,7 @@
 package com.ort.risk.ui.views;
 
-import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.ort.risk.model.Map;
 import com.ort.risk.model.Mode;
@@ -22,6 +19,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author tibo
+ *
+ * Mode and players selector frame
+ */
 public class UIModeStage extends Stage {
 
 	private Map map;

@@ -4,6 +4,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * 
+ * @author tibo
+ *
+ * Application's properties --> config.properties
+ */
 public class RiskProperties {
 	
 	private static Properties prop = new Properties();
