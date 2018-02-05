@@ -3,10 +3,6 @@ package com.ort.risk.game;
 import com.ort.risk.RiskProperties;
 import com.ort.risk.model.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-
 import java.io.File;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -24,6 +20,7 @@ import org.w3c.dom.NodeList;
 
 /**
  * @author CS
+ * Parse the XML file into the Map object
  */
 public class Parser {
     public static void prepMap() {
