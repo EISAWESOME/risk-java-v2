@@ -165,7 +165,7 @@ public class Play {
                         do {
                             System.out.println("Choix de la region ? ");
                             selectedRegionIndex = Integer.parseInt(br.readLine());
-                        } while (selectedRegionIndex > notOccupiedRegions.size() || selectedRegionIndex < 0);
+                        } while (selectedRegionIndex >= notOccupiedRegions.size() || selectedRegionIndex < 0);
 
 
                     } catch (Exception ex) {
