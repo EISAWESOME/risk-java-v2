@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.ort.risk.model;
 
 import java.util.*;
@@ -199,7 +196,7 @@ public class Map {
 	private Map()
 	{}
 
-	private static Map INSTANCE = new Map();
+	private static final Map INSTANCE = new Map();
 
 	public static Map getInstance(){
 		return INSTANCE;

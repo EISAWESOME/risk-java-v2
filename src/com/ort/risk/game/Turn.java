@@ -4,17 +4,14 @@ import com.ort.risk.model.*;
 
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
  * @author CS
  * Player turn
  */
-
-public class turn {
-    public static void TakeTurn(Player currentPlayer) {
-        Map mapObj = Map.getInstance();
+public class Turn {
+    public static void TakeTurn(Player currentPlayer){
         System.out.println("\n\n==========================================================");
         System.out.println("\t\t DEBUT DU TOUR DE " + currentPlayer.getName());
         System.out.println("==========================================================\n\n");
@@ -33,12 +30,16 @@ public class turn {
         System.out.println("Entrez 'e' pour voir les regions controllées par les joueurs ");
         try {
             String s = br.readLine();
-            if (s.equals("e")) {
-                System.out.println("\n==========================================================\n");
-                System.out.println("\n==========================================================\n");
-                play.printPlayerRegions();
-                System.out.println("\n==========================================================\n");
-                System.out.println("\n==========================================================\n");
+            if(s.equals("e")){
+                System.out.println("\n");
+                System.out.println("===========================================");
+                System.out.println("===========================================");
+                System.out.println("\n");
+                Play.printPlayerRegions();
+                System.out.println("\n");
+                System.out.println("===========================================");
+                System.out.println("===========================================");
+                System.out.println("\n");
 
                 System.out.println("--Appuyez sur une touche pour revenir au jeu--");
                 br.readLine();

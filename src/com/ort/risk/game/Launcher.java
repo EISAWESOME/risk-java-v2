@@ -4,7 +4,8 @@ package com.ort.risk.game;
  * @author CS
  * Launcher of the app
  */
-public class launcher {
+public class Launcher {
+
     public static void main(String[] args) {
         Integer ExecMode;
 
@@ -25,13 +26,13 @@ public class launcher {
                 ExecMode = 2;
         }
         // Parse XML file into Map object
-        parser.prepMap();
+        Parser.prepMap();
 
         //Mode selection, and regions repartitions between the players
-        play.InitDeployment(ExecMode);
+        Play.InitDeployment(ExecMode);
 
         //Main loop
-        play.GameLoop();
+        Play.GameLoop();
 
     }
 

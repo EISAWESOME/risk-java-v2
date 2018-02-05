@@ -1,10 +1,7 @@
 package com.ort.risk.game;
 
+import com.ort.risk.RiskProperties;
 import com.ort.risk.model.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 
 import java.io.File;
 
@@ -25,17 +22,17 @@ import org.w3c.dom.NodeList;
  * @author CS
  * Parse the XML file into the Map object
  */
-public class parser {
+public class Parser {
     public static void prepMap() {
+    	
+    	RiskProperties prop = RiskProperties.getInstance();
+    	
         Map mapObj = Map.getInstance();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-        /* TODO : La map doit etre importer d'apres un input de l'utilisateur, pas en dur*/
-        String mapPath = "resources/map/classic.xml";
-
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
-            File mapXML = new File(mapPath);
+            File mapXML = new File(prop.getProperty(RiskProperties.CURRENT_MAP_PATH_PROP) + MapFileHandler.CURRENT_MAP_NAME);
             Document xml = builder.parse(mapXML);
             Element root = xml.getDocumentElement();
             XPathFactory xpf = XPathFactory.newInstance();
