@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ort.risk.game.MapFileHandler;
+import com.ort.risk.game.Parser;
+import com.ort.risk.ui.views.UIModeStage;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -29,7 +31,12 @@ public class UILauncher extends Application {
 
 	private Stage stage;
 	protected File choosedMapFile;
-	MapFileHandler mapFileHandler;
+	private MapFileHandler mapFileHandler;
+	private Label fileNameLabel;
+    private Button mapChooserInput;
+    private Button loadMapButton;
+    private Label mapFileFileChooserLabel;
+	private ChoiceBox<String> savedMapChoiceBox;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -47,20 +54,20 @@ public class UILauncher extends Application {
 		launch(args);
 	}
 	
-	public void initRootLayout() {
+	private void initRootLayout() {
         
 		GridPane root = new GridPane();
         root.setPadding(new Insets(5));
         root.setHgap(5);
         root.setVgap(5);
-        ColumnConstraints column1 = new ColumnConstraints(100);
+        ColumnConstraints column1 = new ColumnConstraints(150);
         ColumnConstraints column2 = new ColumnConstraints(50, 150, 300);
         column2.setHgrow(Priority.ALWAYS);
         root.getColumnConstraints().addAll(column1, column2);
 		
-        Label fileNameLabel = new Label();
-        Button mapChooserInput = new Button("Choose a map");
-        Button loadMapButton = new Button("Load");
+        fileNameLabel = new Label();
+        mapChooserInput = new Button("Choose a map");
+        loadMapButton = new Button("Load");
 
 		List<File> mapFiles = mapFileHandler.getSavedMapFiles();
 		if (mapFiles.size() > 0) {
@@ -72,8 +79,8 @@ public class UILauncher extends Application {
 			for (File file : mapFiles)
 				mapMapFiles.put(file.getName(), file);
 			
-			Label mapFileFileChooserLabel = new Label("Choose a saved map");
-			ChoiceBox<String> savedMapChoiceBox = new ChoiceBox<String>(FXCollections.observableArrayList(mapMapFiles.keySet()));
+			mapFileFileChooserLabel = new Label("Choose a saved map");
+			savedMapChoiceBox = new ChoiceBox<String>(FXCollections.observableArrayList(mapMapFiles.keySet()));
 
 			savedMapChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number> () {
 				
@@ -94,28 +101,9 @@ public class UILauncher extends Application {
 			root.add(savedMapChoiceBox, 1, 0);
 		}
 		
-        mapChooserInput.setOnAction(new EventHandler<ActionEvent> () {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-				FileChooser fileChooser = new FileChooser();
-				fileChooser.setTitle("Open the map XML file");
-				fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML", "*.xml"));
-				choosedMapFile = fileChooser.showOpenDialog(stage);
-				fileNameLabel.setText(choosedMapFile.getName());
-			}
-        	
-        });
+        mapChooserInput.setOnAction(new MapChooserHandler());
         
-        loadMapButton.setOnAction(new EventHandler<ActionEvent> () {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-				mapFileHandler.saveMap(choosedMapFile);
-				mapFileHandler.moveMapFileToCurrent(choosedMapFile);
-			}
-        	
-        });
+        loadMapButton.setOnAction(new LoadButtonHander());
 
         // FileChooser
         GridPane.setHalignment(mapChooserInput, HPos.LEFT);
@@ -130,7 +118,32 @@ public class UILauncher extends Application {
         root.add(loadMapButton, 1, 2);
 
         // Show the scene containing the root layout.
-        stage.setScene(new Scene(root, 300, 200));
+        stage.setScene(new Scene(root, 400, 200));
         stage.show();
     }
+	
+	class LoadButtonHander implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			mapFileHandler.saveMap(choosedMapFile);
+			mapFileHandler.moveMapFileToCurrent(choosedMapFile);
+			Parser.prepMap();
+			new UIModeStage().getDisplay();
+		}
+    	
+    }
+	
+	class MapChooserHandler implements EventHandler<ActionEvent> {
+		
+		@Override
+		public void handle(ActionEvent arg0) {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Open the map XML file");
+			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML", "*.xml"));
+			choosedMapFile = fileChooser.showOpenDialog(stage);
+			fileNameLabel.setText(choosedMapFile.getName());
+		}
+		
+	}
 }
