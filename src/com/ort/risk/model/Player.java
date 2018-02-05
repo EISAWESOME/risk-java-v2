@@ -91,4 +91,9 @@ public class Player {
 		//If the target region is controlled by the player
 			Deployment.execute(this);
 	}
+
+	public void executeWar(){
+		//If the target region is controlled by the player
+		War.execute(this);
+	}
 }

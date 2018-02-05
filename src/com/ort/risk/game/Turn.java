@@ -21,7 +21,8 @@ public class Turn {
 
         /* TODO : GUI pick l'actions parmis la liste*/
 
-        currentPlayer.executeDeployment();
+        //currentPlayer.executeDeployment();
+        currentPlayer.executeWar();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 

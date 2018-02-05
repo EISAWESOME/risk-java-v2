@@ -27,8 +27,6 @@ public class Deployment {
 
         while (nbDeployMax > 0) {
 
-
-            //Chosing a random controlled region
             int selectedRegionIndex = 0;
             Region target = playerRegions.get(selectedRegionIndex);
 
@@ -50,7 +48,7 @@ public class Deployment {
                 System.out.println("Region controllés :");
                 for (int cr = 0; cr < playerRegions.size(); cr++) {
                     Region currentRegion = playerRegions.get(cr);
-                    System.out.println("\t[" + cr + "] " + currentRegion.getName() + "Nb troupes : " + currentRegion.getDeployedTroops());
+                    System.out.println("\t[" + cr + "] " + currentRegion.getName() + " - Nb troupes : " + currentRegion.getDeployedTroops());
                 }
 
                 try {

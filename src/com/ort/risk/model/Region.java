@@ -116,9 +116,9 @@ public class Region {
 	}
 
 	/**
-	 *
+	 * if the region has 2+ troops on it, and a frontier valid for war move
 	 * @param player
-	 * @return if the region has 2+ troops on it, and a frontier valid for war move
+	 * @return the region or null
 	 */
 	public Region isWarRegion(Player player){
 		if(this.getDeployedTroops() >= 2){
@@ -130,7 +130,39 @@ public class Region {
 			return null;
 		}
 		return null;
-
 	}
+
+	/**
+	 *
+	 * @param player
+	 * @return the list of region the player is able to engage war on
+	 */
+	public List<Region> getAllWarTargets(Player player){
+		List<Region> allWarTargets = new ArrayList<Region>();
+		for(Frontier frontier : this.getFrontiers()){
+			if(frontier.getWarTarget(player) != null){
+				allWarTargets.add(frontier.getWarTarget(player));
+			}
+		}
+
+		return allWarTargets;
+	}
+
+	public List<Move> getFrontierWarMoves(String endRegionName){
+		List<Move> warMoves = new ArrayList<Move>();
+		for(Frontier frontier : this.getFrontiers()){
+			if(frontier.getRegionEndName().equalsIgnoreCase(endRegionName)){
+				for(Move move : frontier.getMoves()){
+					if (!move.getName().equalsIgnoreCase("Reinforcement")){
+						warMoves.add(move);
+					}
+				}
+			}
+
+		}
+		return warMoves;
+	}
+
+
 	
 }
