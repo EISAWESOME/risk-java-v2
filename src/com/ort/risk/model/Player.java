@@ -72,12 +72,23 @@ public class Player {
 		this.nbTroops = nbTroops;
 	}
 
+	/**
+	 * @return the list of region from where the player can initiate a war
+	 */
+	public List<Region> getWarRegions(){
+		List<Region> warRegions = new ArrayList<Region>();
+		for(Region region : this.getControlledRegions()){
+			if(region.isWarRegion(this) != null){
+				warRegions.add(region.isWarRegion(this));
+			}
+		}
+		return warRegions;
+	}
+
 
 
 	public void executeDeployment(){
 		//If the target region is controlled by the player
 			Deployment.execute(this);
-
-
 	}
 }

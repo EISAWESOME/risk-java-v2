@@ -6,6 +6,7 @@ package com.ort.risk.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.function.Predicate;
 
 /**
  * @author tibo
@@ -69,6 +70,23 @@ public class Frontier {
 				"%s - [ regionEnd = %s, moves = [ %s ] ]",
 				this.getClass().getName(), regionEndName,
 				moves.stream().map(Move::toString).collect(Collectors.joining(", ")));
+	}
+
+	public boolean isWarFrontier(Player player){
+		Predicate<Region> p = e -> e.getName().equalsIgnoreCase(this.getRegionEndName());
+
+		//If the player doesnt control a region with that name
+		if(!player.getControlledRegions().stream().anyMatch(p)){
+			for(Move move : this.getMoves()){
+				if(!move.getName().equalsIgnoreCase("Reinforcment")){
+					return true;
+				}
+			}
+			return false;
+		} else {
+			return false;
+		}
+
 	}
 	
 }

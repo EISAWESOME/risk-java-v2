@@ -3,6 +3,7 @@ package com.ort.risk.game;
 import com.ort.risk.RiskProperties;
 import com.ort.risk.model.*;
 
+
 import java.io.File;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -24,16 +25,26 @@ import org.w3c.dom.NodeList;
  */
 public class Parser {
     public static void prepMap() {
-    	
+
     	RiskProperties prop = RiskProperties.getInstance();
-    	
+
         Map mapObj = Map.getInstance();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
+        /* TODO : La map doit etre importer d'apres un input de l'utilisateur, pas en dur*/
+        String mapPath = "";
+
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
-            File mapXML = new File(prop.getProperty(RiskProperties.CURRENT_MAP_PATH_PROP) + MapFileHandler.CURRENT_MAP_NAME);
-            Document xml = builder.parse(mapXML);
+            if(mapObj.getExMode() == Launcher.ExecMode.GUI.value()){
+                File mapXML = new File(prop.getProperty(RiskProperties.CURRENT_MAP_PATH_PROP) + MapFileHandler.CURRENT_MAP_NAME);
+            } else {
+                mapPath = "resources/map/classic.xml";
+                File mapXML = new File(mapPath);
+            }
+            Document xml = builder.parse(mapPath);
+
+
             Element root = xml.getDocumentElement();
             XPathFactory xpf = XPathFactory.newInstance();
             XPath path = xpf.newXPath();

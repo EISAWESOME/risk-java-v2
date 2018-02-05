@@ -1,6 +1,7 @@
 package com.ort.risk.game;
 
 import com.ort.risk.model.*;
+import com.ort.risk.game.Launcher.ExecMode;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -9,31 +10,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+
 /**
  * @author CS
  * Game sourcecode. Contaien the two phases : Initialisation, and turn loops
  */
 public class Play {
 
-    enum ExecMode {
-        CONSOLE(0),
-        RANDOM(1),
-        GUI(2);
 
-        private final int value;
-
-        ExecMode(int value) {
-            this.value = value;
-        }
-
-        public int value() {
-            return this.value;
-        }
-
-    }
 
     public static void GameLoop() {
         Map mapObj = Map.getInstance();
+        int exMode = mapObj.getExMode();
         List<Player> playerList = mapObj.getPlayerList();
 
         //Sort the players by turn order
@@ -68,12 +56,13 @@ public class Play {
         }
     }
 
-    public static void InitDeployment(int exMode) {
+    public static void InitDeployment() {
         Map mapObj = Map.getInstance();
+        int exMode = mapObj.getExMode();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println(
-                "__________.___  _____________  __.\n" +
+                        "__________.___  _____________  __.\n" +
                         "\\______   \\   |/   _____/    |/ _|\n" +
                         " |       _/   |\\_____  \\|      <  \n" +
                         " |    |   \\   |/        \\    |  \\ \n" +
@@ -111,7 +100,7 @@ public class Play {
             }
         }
 
-        if (exMode == ExecMode.GUI.value) {
+        if (exMode == ExecMode.GUI.value()) {
 
             /* TODO : Input utilisateur via GUI*/
             selectedModeIndex = (int) (Math.random() * allModes.size());
@@ -147,7 +136,7 @@ public class Play {
         List<Region> notOccupiedRegions = mapObj.getRegions().stream()
                 .filter(p -> !p.getIsOccupied()).collect(Collectors.toList());
 
-        while (notOccupiedRegions.size() > allModes.get(0).getNbPlayer()) {
+        while (notOccupiedRegions.size() > 1) {
             for (int p = 0; p < mapObj.getPlayerList().size(); p++) {
                 int selectedRegionIndex = 0;
                 //Random mode

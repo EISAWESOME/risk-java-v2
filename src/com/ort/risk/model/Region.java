@@ -114,5 +114,23 @@ public class Region {
 				this.getClass().getName(), this.name, this.bonus,
 				frontiers.stream().map(Frontier::toString).collect(Collectors.joining(", ")));
 	}
+
+	/**
+	 *
+	 * @param player
+	 * @return if the region has 2+ troops on it, and a frontier valid for war move
+	 */
+	public Region isWarRegion(Player player){
+		if(this.getDeployedTroops() >= 2){
+			for(Frontier frontier : this.getFrontiers()){
+				if(frontier.isWarFrontier(player)){
+					return this;
+				}
+			}
+			return null;
+		}
+		return null;
+
+	}
 	
 }
