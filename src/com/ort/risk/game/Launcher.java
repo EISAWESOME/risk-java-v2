@@ -1,6 +1,8 @@
 package com.ort.risk.game;
 
 import com.ort.risk.model.Map;
+import com.ort.risk.console.ConsoleLauncher;
+import com.ort.risk.ui.UILauncher;
 
 /**
  * @author CS
@@ -16,30 +18,23 @@ public class Launcher {
                 //Mode console
                 case "-c":
                     mapObj.setExMode(ExecMode.CONSOLE.value());
+                    ConsoleLauncher.run();
                     break;
                 //Mode random
                 case "-r":
                     mapObj.setExMode(ExecMode.RANDOM.value());
+                    ConsoleLauncher.run();
                     break;
                 //Mode graphique
                 case "-g":
-                    mapObj.setExMode(ExecMode.GUI.value());
                     break;
                 default:
                     mapObj.setExMode(ExecMode.GUI.value());
             }
         } else {
             mapObj.setExMode(ExecMode.CONSOLE.value());
+            ConsoleLauncher.run();
         }
-
-        // Parse XML file into Map object
-        Parser.prepMap();
-
-        //Mode selection, and regions repartitions between the players
-        Play.InitDeployment();
-
-        //Main loop
-        Play.GameLoop();
 
     }
 

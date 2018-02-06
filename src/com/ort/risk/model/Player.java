@@ -41,7 +41,7 @@ public class Player {
 		this.nbTroops = nbTroops;
 	}
 
-	public void changeNbTroupes(int nbTroops){
+	public void changeNbTroops(int nbTroops){
 		this.nbTroops += nbTroops;
 	}
 
@@ -83,17 +83,5 @@ public class Player {
 			}
 		}
 		return warRegions;
-	}
-
-
-
-	public void executeDeployment(){
-		//If the target region is controlled by the player
-			Deployment.execute(this);
-	}
-
-	public void executeWar(){
-		//If the target region is controlled by the player
-		War.execute(this);
 	}
 }

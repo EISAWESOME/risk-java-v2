@@ -1,6 +1,7 @@
-package com.ort.risk.game.actions;
+package com.ort.risk.console;
 
 import com.ort.risk.model.*;
+import com.ort.risk.game.actions.*;
 import com.ort.risk.game.Launcher.ExecMode;
 
 import java.io.BufferedReader;
@@ -20,8 +21,7 @@ public class Deployment {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int min = mapObj.getNbMinReinforcement();
-        int bonusSum = calcBonusSum(player);
-        int nbDeployMax = Math.max(min, bonusSum);
+        int nbDeployMax = calcMaxDeploy.execute(player);
         List<Region> playerRegions = player.getControlledRegions();
         //System.out.println(nbRenfort);
 
@@ -72,15 +72,9 @@ public class Deployment {
                 }
             }
 
-            //Gui mode
-            if (exMode == ExecMode.CONSOLE.value()) {
-                /* TODO : Choix d'une region possédé -> GUI */
-                /* TODO : Choix du nombre de troupe à deployer -> GUI */
-            }
-
-
-            target.changeDeployedTroops(nbTroopsToDeploy);
+            deployTroops.execute(target, nbTroopsToDeploy);
             nbDeployMax -= nbTroopsToDeploy;
+
             System.out.println(player.getName() + " a deployé (" + nbTroopsToDeploy + ") troupes sur la region de " + target.getName() + " !");
             if (nbDeployMax > 0) {
                 System.out.println("Il doit encore deployer " + nbDeployMax + " troupes !!");
@@ -90,31 +84,5 @@ public class Deployment {
             System.out.println("\n");
 
         }
-    }
-
-    public static int calcBonusSum(Player p) {
-        Map mapObj = Map.getInstance();
-        List<Region> controlledRegions = p.getControlledRegions();
-        List<Zone> allZones = mapObj.getZones();
-        int bonusSum = 0;
-
-        //For each controlled region
-        for (Region region : controlledRegions) {
-            //System.out.println(region.getBonus());
-            bonusSum += region.getBonus();
-        }
-
-        for (Zone zone : allZones) {
-            // Only if the players owns all the zone's region
-            // Then he can have the zone bonus
-            List<Region> zoneRegions = zone.getRegions();
-            if (controlledRegions.containsAll(zoneRegions)) {
-                bonusSum += zone.getBonus();
-            }
-            //System.out.println(zone.getBonus());
-        }
-
-        //Return the truncated integer (= rounded down)
-        return (int) Math.floor(bonusSum / mapObj.getDivider());
     }
 }

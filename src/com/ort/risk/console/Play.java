@@ -1,7 +1,9 @@
-package com.ort.risk.game;
+package com.ort.risk.console;
 
-import com.ort.risk.model.*;
 import com.ort.risk.game.Launcher.ExecMode;
+import com.ort.risk.game.actions.*;
+import com.ort.risk.model.*;
+
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -10,13 +12,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-
 /**
  * @author CS
  * Game sourcecode. Contaien the two phases : Initialisation, and turn loops
  */
 public class Play {
-
 
 
     public static void GameLoop() {
@@ -62,7 +62,7 @@ public class Play {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println(
-                        "__________.___  _____________  __.\n" +
+                "__________.___  _______________.\n" +
                         "\\______   \\   |/   _____/    |/ _|\n" +
                         " |       _/   |\\_____  \\|      <  \n" +
                         " |    |   \\   |/        \\    |  \\ \n" +
@@ -100,14 +100,16 @@ public class Play {
             }
         }
 
+        //
         if (exMode == ExecMode.GUI.value()) {
+            /* TODO : Input utilisateur via GUI */
 
-            /* TODO : Input utilisateur via GUI*/
-            selectedModeIndex = (int) (Math.random() * allModes.size());
+
         }
 
 
         allModes.get(selectedModeIndex).setIsSelected(true);
+        ConsoleLauncher.clearConsole();
 
         System.out.println("Mode selectionné : ");
         System.out.println("\tNb player : " + allModes.get(selectedModeIndex).getNbPlayer());
@@ -127,7 +129,7 @@ public class Play {
 
         if (exMode == ExecMode.CONSOLE.value()) {
             System.out.println("\n\n==================================================================================================================");
-            System.out.println("\t\t Deploiement initial, les joueurs choissisent une région non occupée chacun leur tour !");
+            System.out.println("\t\t Attribution des regions, les joueurs choissisent une région non occupée chacun leur tour !");
             System.out.println("==================================================================================================================\n\n");
         }
 
@@ -162,20 +164,94 @@ public class Play {
                     }
                 }
 
-                if (exMode == ExecMode.GUI.value()) {
-                    /* TODO : Input GUI */
-                    selectedRegionIndex = (int) (Math.random() * notOccupiedRegions.size());
-                }
                 //Both region and zone list references the same region objects
                 //Hence, change flags in the region list would change them in the zone list too
+                /*
                 notOccupiedRegions.get(selectedRegionIndex).setDeployedTroops(1);
-                mapObj.getPlayerList().get(p).changeNbTroupes(-1);
+                mapObj.getPlayerList().get(p).changeNbTroops(-1);
 
                 mapObj.getPlayerList().get(p).addControlledRegion(notOccupiedRegions.get(selectedRegionIndex));
-                notOccupiedRegions.get(selectedRegionIndex).setIsOccupied(true);
+                notOccupiedRegions.get(selectedRegionIndex).setIsOccupied(true);*/
+
+                Player currentPlayer = mapObj.getPlayerList().get(p);
+                Region chosenRegion = notOccupiedRegions.get(selectedRegionIndex);
+
+                attribRegion.execute(currentPlayer, chosenRegion);
+
 
                 notOccupiedRegions = notOccupiedRegions.stream()
                         .filter(po -> !po.getIsOccupied()).collect(Collectors.toList());
+            }
+        }
+        //Initial deployment
+
+        // Console mode
+        if (exMode == ExecMode.CONSOLE.value()) {
+            System.out.println("\n\n==================================================================================================================");
+            System.out.println("\t\t Deploiement initial, repartissez vos troupes sur vos régions");
+            System.out.println("==================================================================================================================\n\n");
+
+
+
+            for (int q = 0; q < mapObj.getPlayerList().size(); q++) {
+                Player currentPlayer = mapObj.getPlayerList().get(q);
+                List<Region> playerRegions = currentPlayer.getControlledRegions();
+                int selectedRegionIndex = 0;
+                int nbTroopsToDeploy = 0;
+                System.out.println("DEPLOIEMENT DE " + currentPlayer.getName() + "\n");
+                while (currentPlayer.getNbTroops() > 0) {
+
+                    System.out.println("Troupes a repartir par " + currentPlayer.getName() + " : " + currentPlayer.getNbTroops() +"\n");
+
+                    //Select region to deploy troop too
+                    System.out.println("Region controllés :");
+                    for (int cr = 0; cr < playerRegions.size(); cr++) {
+                        Region currentRegion = playerRegions.get(cr);
+                        System.out.println("\t[" + cr + "] " + currentRegion.getName() + " - Nb troupes : " + currentRegion.getDeployedTroops());
+                    }
+
+                    try {
+                        do {
+                            System.out.println("Choix de la region ? ");
+                            selectedRegionIndex = Integer.parseInt(br.readLine());
+                        } while (selectedRegionIndex >= playerRegions.size() || selectedRegionIndex < 0);
+                    } catch (Exception ex) {
+
+                    }
+
+                    //Select number of troop to deploy
+                    System.out.println("Combien de troupes deployer sur la region de " + playerRegions.get(selectedRegionIndex).getName());
+                    try {
+                        do {
+                            System.out.println(" (1-" + currentPlayer.getNbTroops() + ") ?");
+                            nbTroopsToDeploy = Integer.parseInt(br.readLine());
+                        } while (nbTroopsToDeploy < 1 || nbTroopsToDeploy > currentPlayer.getNbTroops());
+                    } catch (Exception ex) {
+
+                    }
+
+                    Region selectedRegion = currentPlayer.getControlledRegions().get(selectedRegionIndex);
+
+                    deployTroops.execute(selectedRegion, nbTroopsToDeploy);
+
+                    currentPlayer.changeNbTroops(-nbTroopsToDeploy);
+                    System.out.println("\n==================================================================================================================\n");
+                }
+                System.out.println("\n==================================================================================================================\n");
+
+            }
+        }
+
+        //Random mode
+        if (exMode == ExecMode.RANDOM.value()) {
+            /* TODO  : A CHANGER - Le déploiement se fait de façon random, en attendant l'interface graphique */
+            for (int q = 0; q < mapObj.getPlayerList().size(); q++) {
+                Player currentPlayer = mapObj.getPlayerList().get(q);
+                while (currentPlayer.getNbTroops() > 0) {
+                    int rand = (int) (Math.random() * currentPlayer.getControlledRegions().size());
+                    currentPlayer.getControlledRegions().get(rand).changeDeployedTroops(1);
+                    currentPlayer.changeNbTroops(-1);
+                }
             }
         }
 
@@ -183,17 +259,6 @@ public class Play {
         System.out.println("\t\t\tDEBUT DE LA PARTIE");
         System.out.println("==========================================================");
 
-
-        //Initial deployment
-        /* TODO  : A CHANGER - Le déploiement se fait de façon random, en attendant l'interface graphique */
-        for (int q = 0; q < mapObj.getPlayerList().size(); q++) {
-            Player currentPlayer = mapObj.getPlayerList().get(q);
-            while (currentPlayer.getNbTroops() > 0) {
-                int rand = (int) (Math.random() * currentPlayer.getControlledRegions().size());
-                currentPlayer.getControlledRegions().get(rand).changeDeployedTroops(1);
-                currentPlayer.changeNbTroupes(-1);
-            }
-        }
 
     }
 

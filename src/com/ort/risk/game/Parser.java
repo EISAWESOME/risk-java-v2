@@ -39,7 +39,7 @@ public class Parser {
             if(mapObj.getExMode() == Launcher.ExecMode.GUI.value()){
                 File mapXML = new File(prop.getProperty(RiskProperties.CURRENT_MAP_PATH_PROP) + MapFileHandler.CURRENT_MAP_NAME);
             } else {
-                mapPath = "resources/map/classic.xml";
+                mapPath = "classic.xml";
                 File mapXML = new File(mapPath);
             }
             Document xml = builder.parse(mapPath);
