@@ -1,6 +1,5 @@
 package com.ort.risk.game;
 
-import com.ort.risk.RiskProperties;
 import com.ort.risk.model.*;
 
 
@@ -26,7 +25,7 @@ import org.w3c.dom.NodeList;
 public class Parser {
     public static void prepMap() {
 
-    	RiskProperties prop = RiskProperties.getInstance();
+    	MapFileHandler mapHandler = new MapFileHandler();
 
         Map mapObj = Map.getInstance();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -38,14 +37,14 @@ public class Parser {
 
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
+
             if(mapObj.getExMode() == Launcher.ExecMode.GUI.value()){
-                File mapXML = new File(prop.getProperty(RiskProperties.CURRENT_MAP_PATH_PROP) + MapFileHandler.CURRENT_MAP_NAME);
-                xml = builder.parse(mapXML);
+                File mapXML = mapHandler.getCurrentMapFile();
+				xml = builder.parse(mapXML);
             } else {
                 in = Parser.class.getResourceAsStream("resources/classic.xml");
                 xml = builder.parse(in);
             }
-
 
 
             Element root = xml.getDocumentElement();

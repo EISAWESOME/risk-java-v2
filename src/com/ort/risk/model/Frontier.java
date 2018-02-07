@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.function.Predicate;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.collectingAndThen;
 
 
 /**
