@@ -1,6 +1,5 @@
 package com.ort.risk.game;
 
-import com.ort.risk.RiskProperties;
 import com.ort.risk.model.*;
 
 
