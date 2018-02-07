@@ -1,5 +1,7 @@
 package com.ort.risk.model;
 
+import com.ort.risk.game.actions.WarAction;
+
 /**
  * @author tibo
  * Define a possible move between regions
@@ -39,19 +41,22 @@ public class Move {
 				this.getClass().getName(), this.name);
 	}
 
-	public void execute(Player player){
+	public Object[] execute(Region atkRegion, Player atkPlayer, Region defRegion, int nbAttack, int nbDef){
+		Object[] ret = null;
 		switch(this.getName()){
 			case "Reinforcement":
-				System.out.println(player.getName() + " utilise 'Renforcement'");
+				System.out.println(atkPlayer.getName() + " utilise 'Renforcement'");
 				System.out.println("Mais cela n'a aucun effet...\n");
 				break;
 			case "Assault":
-				System.out.println(player.getName() + " utilise 'Assaut'");
-				System.out.println("Mais cela n'a aucun effet...\n");
+				//System.out.println(atkPlayer.getName() + " utilise 'Assaut'");
+				ret = WarAction.Assault(atkRegion, atkPlayer, defRegion, nbAttack, nbDef);
+				//System.out.println("Mais cela n'a aucun effet...\n");
 				break;
 			default:
 				System.out.println("Action inconnu ???\n");
 		}
+		return ret;
 	}
 	
 }

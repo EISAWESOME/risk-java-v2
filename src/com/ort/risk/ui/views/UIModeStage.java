@@ -107,7 +107,7 @@ public class UIModeStage extends CustomStage {
 				for ( Node playerTextField : textFields ) {
 					TextField tf = (TextField) playerTextField;
 					String name = (tf.getText().length() > 0) ? tf.getText() : String.format("Player %d", textFields.indexOf(playerTextField) + 1);
-					players.add(new Player(name, textFields.indexOf(playerTextField) + 1, selectedMode.getNbInitTroops()));
+					players.add(new Player(name, true, textFields.indexOf(playerTextField) + 1, selectedMode.getNbInitTroops()));
 				}
 				map.setPlayerList(players);
 				new UIGameStage().getDisplay(null, null);

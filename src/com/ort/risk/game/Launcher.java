@@ -29,7 +29,8 @@ public class Launcher {
                 case "-g":
                     break;
                 default:
-                    mapObj.setExMode(ExecMode.GUI.value());
+                    mapObj.setExMode(ExecMode.CONSOLE.value());
+                    ConsoleLauncher.run();
             }
         } else {
             mapObj.setExMode(ExecMode.CONSOLE.value());

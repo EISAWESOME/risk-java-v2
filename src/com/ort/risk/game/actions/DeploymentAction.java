@@ -1,12 +1,30 @@
 package com.ort.risk.game.actions;
 
-import com.ort.risk.model.*;
+import com.ort.risk.model.Map;
+import com.ort.risk.model.Player;
+import com.ort.risk.model.Region;
+import com.ort.risk.model.Zone;
 
 import java.util.List;
 
+public class DeploymentAction {
 
-public class calcMaxDeploy {
-    public static int execute(Player p){
+
+    public static void attribRegion(Player player, Region chosenRegion){
+        int a = chosenRegion.getDeployedTroops();
+        chosenRegion.setDeployedTroops(1);
+        player.changeNbTroops(-1);
+
+        player.addControlledRegion(chosenRegion);
+        chosenRegion.setIsOccupied(true);
+    }
+
+    public static void deployTroops(Region chosenRegion, int nbTroopsToDeploy){
+        chosenRegion.changeDeployedTroops(nbTroopsToDeploy);
+    }
+
+
+    public static int calcMaxDeploy(Player p){
 
         Map mapObj = Map.getInstance();
         int min = mapObj.getNbMinReinforcement();
@@ -14,7 +32,6 @@ public class calcMaxDeploy {
         return Math.max(min, bonusSum);
 
     }
-
     private static int calcBonusSum(Player p) {
         Map mapObj = Map.getInstance();
         List<Region> controlledRegions = p.getControlledRegions();
@@ -40,4 +57,5 @@ public class calcMaxDeploy {
         //Return the truncated integer (= rounded down)
         return (int) Math.floor(bonusSum / mapObj.getDivider());
     }
+
 }

@@ -21,7 +21,7 @@ public class Deployment {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int min = mapObj.getNbMinReinforcement();
-        int nbDeployMax = calcMaxDeploy.execute(player);
+        int nbDeployMax = DeploymentAction.calcMaxDeploy(player);
         List<Region> playerRegions = player.getControlledRegions();
         //System.out.println(nbRenfort);
 
@@ -51,28 +51,41 @@ public class Deployment {
                     System.out.println("\t[" + cr + "] " + currentRegion.getName() + " - Nb troupes : " + currentRegion.getDeployedTroops());
                 }
 
-                try {
-                    do {
-                        System.out.println("Choix de la region ? ");
-                        selectedRegionIndex = Integer.parseInt(br.readLine());
-                    } while (selectedRegionIndex >= playerRegions.size() || selectedRegionIndex < 0);
-                } catch (Exception ex) {
+                if(player.getIsHuman()) {
+                    try {
+                        do {
+                            System.out.println("Choix de la region ? ");
+                            selectedRegionIndex = Integer.parseInt(br.readLine());
+                        } while (selectedRegionIndex >= playerRegions.size() || selectedRegionIndex < 0);
+                    } catch (Exception ex) {
 
+                    }
+                }
+
+                if(!player.getIsHuman()) {
+                    /* TODO DYLAN */
                 }
 
                 //Select number of troop to deploy
                 System.out.println("Combien de troupes deployer sur la region de " + playerRegions.get(selectedRegionIndex).getName());
-                try {
-                    do {
-                        System.out.println(" ("+ min +"-" + nbDeployMax + ") ?" );
-                        nbTroopsToDeploy = Integer.parseInt(br.readLine());
-                    } while (nbTroopsToDeploy < min || nbTroopsToDeploy > nbDeployMax );
-                } catch (Exception ex) {
 
+                if(player.getIsHuman()) {
+                    try {
+                        do {
+                            System.out.println(" (" + min + "-" + nbDeployMax + ") ?");
+                            nbTroopsToDeploy = Integer.parseInt(br.readLine());
+                        } while (nbTroopsToDeploy < min || nbTroopsToDeploy > nbDeployMax);
+                    } catch (Exception ex) {
+
+                    }
+                }
+
+                if(!player.getIsHuman()) {
+                    /* TODO DYLAN */
                 }
             }
 
-            deployTroops.execute(target, nbTroopsToDeploy);
+            DeploymentAction.deployTroops(target, nbTroopsToDeploy);
             nbDeployMax -= nbTroopsToDeploy;
 
             System.out.println(player.getName() + " a deployé (" + nbTroopsToDeploy + ") troupes sur la region de " + target.getName() + " !");
