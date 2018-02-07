@@ -27,6 +27,13 @@ import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author tibo
+ *
+ * Main Launcher
+ * Map selector
+ */
 public class UILauncher extends Application {
 
 	private Stage stage;

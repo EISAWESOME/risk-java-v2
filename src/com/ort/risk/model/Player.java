@@ -41,7 +41,7 @@ public class Player {
 		this.nbTroops = nbTroops;
 	}
 
-	public void changeNbTroupes(int nbTroops){
+	public void changeNbTroops(int nbTroops){
 		this.nbTroops += nbTroops;
 	}
 
@@ -74,12 +74,16 @@ public class Player {
 		this.nbTroops = nbTroops;
 	}
 
-
-
-	public void executeDeployment(){
-		//If the target region is controlled by the player
-			Deployment.execute(this);
-
-
+	/**
+	 * @return the list of region from where the player can initiate a war
+	 */
+	public List<Region> getWarRegions(){
+		List<Region> warRegions = new ArrayList<Region>();
+		for(Region region : this.getControlledRegions()){
+			if(region.isWarRegion(this) != null){
+				warRegions.add(region.isWarRegion(this));
+			}
+		}
+		return warRegions;
 	}
 }

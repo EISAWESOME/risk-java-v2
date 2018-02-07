@@ -50,6 +50,8 @@ public class Map {
 	 */
 	private int divider;
 
+	private int exMode;
+
 	
 	/**
 	 * @return the name
@@ -209,5 +211,15 @@ public class Map {
 				modes.stream().map(Mode::toString).collect(Collectors.joining(", ")),
 				zones.stream().map(Zone::toString).collect(Collectors.joining(", ")));
 	}
-	
+
+	/**
+	 * Execution mode, can be 0 : Random, 1 : Console; 2 : GUI
+	 */
+	public int getExMode() {
+		return exMode;
+	}
+
+	public void setExMode(int exMode) {
+		this.exMode = exMode;
+	}
 }

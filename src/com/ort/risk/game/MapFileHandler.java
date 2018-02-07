@@ -10,6 +10,12 @@ import com.ort.risk.RiskProperties;
 
 import java.nio.file.*;
 
+/**
+ * 
+ * @author tibo
+ *
+ * XML files manager
+ */
 public class MapFileHandler {
 
 	RiskProperties properties = RiskProperties.getInstance();

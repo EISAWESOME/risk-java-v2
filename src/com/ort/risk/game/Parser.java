@@ -3,6 +3,7 @@ package com.ort.risk.game;
 import com.ort.risk.RiskProperties;
 import com.ort.risk.model.*;
 
+
 import java.io.File;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -29,6 +30,9 @@ public class Parser {
 
         Map mapObj = Map.getInstance();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+        /* TODO : La map doit etre importer d'apres un input de l'utilisateur, pas en dur*/
+        String mapPath = "";
 
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();

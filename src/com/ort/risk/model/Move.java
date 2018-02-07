@@ -38,5 +38,20 @@ public class Move {
 				"%s - [ name = %s ]",
 				this.getClass().getName(), this.name);
 	}
+
+	public void execute(Player player){
+		switch(this.getName()){
+			case "Reinforcement":
+				System.out.println(player.getName() + " utilise 'Renforcement'");
+				System.out.println("Mais cela n'a aucun effet...\n");
+				break;
+			case "Assault":
+				System.out.println(player.getName() + " utilise 'Assaut'");
+				System.out.println("Mais cela n'a aucun effet...\n");
+				break;
+			default:
+				System.out.println("Action inconnu ???\n");
+		}
+	}
 	
 }

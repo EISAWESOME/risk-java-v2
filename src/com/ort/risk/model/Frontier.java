@@ -6,6 +6,10 @@ package com.ort.risk.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.function.Predicate;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.collectingAndThen;
+
 
 
 /**
@@ -71,5 +75,50 @@ public class Frontier {
 				this.getClass().getName(), regionEndName,
 				moves.stream().map(Move::toString).collect(Collectors.joining(", ")));
 	}
+
+	/**
+	 *
+	 * @param player
+	 * @return true if
+	 */
+	public boolean isWarFrontier(Player player){
+		Predicate<Region> p = e -> e.getName().equalsIgnoreCase(this.getRegionEndName());
+
+		//If the player doesnt control a region with that name
+		if(!player.getControlledRegions().stream().anyMatch(p)){
+			for(Move move : this.getMoves()){
+				if(!move.getName().equalsIgnoreCase("Reinforcement")){
+					return true;
+				}
+			}
+			return false;
+		} else {
+			return false;
+		}
+	}
+
+	public Region getWarTarget(Player player){
+		Predicate<Region> p = e -> e.getName().equalsIgnoreCase(this.getRegionEndName());
+		Map mapObj = Map.getInstance();
+		List<Region> allRegions = mapObj.getRegions();
+
+		//If the player doesnt control a region with that name
+		if(!player.getControlledRegions().stream().anyMatch(p)){
+			for(Move move : this.getMoves()){
+				if(!move.getName().equalsIgnoreCase("Reinforcement")){
+					List<Region> target = allRegions.stream()
+							.filter(r -> r.getName().equalsIgnoreCase(this.getRegionEndName() ))
+							.collect(Collectors.toList());
+
+					return target.get(0);
+				}
+			}
+			return null;
+		} else {
+			return null;
+		}
+	}
+
+
 	
 }

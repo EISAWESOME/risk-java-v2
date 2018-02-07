@@ -1,5 +1,9 @@
 package com.ort.risk.game;
 
+import com.ort.risk.model.Map;
+import com.ort.risk.console.ConsoleLauncher;
+import com.ort.risk.ui.UILauncher;
+
 /**
  * @author CS
  * Launcher of the app
@@ -7,32 +11,53 @@ package com.ort.risk.game;
 public class Launcher {
 
     public static void main(String[] args) {
-        Integer ExecMode;
+        Map mapObj = Map.getInstance();
 
-        switch (args[0]) {
-            //Mode console
-            case "-c":
-                ExecMode = 0;
-                break;
-            //Mode random
-            case "-r":
-                ExecMode = 1;
-                break;
-            //Mode graphique
-            case "-g":
-                ExecMode = 2;
-                break;
-            default:
-                ExecMode = 2;
+        if(args.length > 0){
+            switch (args[0]) {
+                //Mode console
+                case "-c":
+                    mapObj.setExMode(ExecMode.CONSOLE.value());
+                    ConsoleLauncher.run();
+                    break;
+                //Mode random
+                case "-r":
+                    mapObj.setExMode(ExecMode.RANDOM.value());
+                    ConsoleLauncher.run();
+                    break;
+                //Mode graphique
+                case "-g":
+                    break;
+                default:
+                    mapObj.setExMode(ExecMode.GUI.value());
+            }
+        } else {
+            mapObj.setExMode(ExecMode.CONSOLE.value());
+            ConsoleLauncher.run();
         }
-        // Parse XML file into Map object
-        Parser.prepMap();
 
-        //Mode selection, and regions repartitions between the players
-        Play.InitDeployment(ExecMode);
+    }
 
-        //Main loop
-        Play.GameLoop();
+    public enum ExecMode {
+        CONSOLE(0, "-c"),
+        RANDOM(1, "-r"),
+        GUI(2, "-g");
+
+        private final int value;
+        private final String consoleArg;
+
+        ExecMode(int value, String consoleArg) {
+
+            this.value = value;
+            this.consoleArg = consoleArg;
+        }
+
+        public int value() {
+            return this.value;
+        }
+        public String arg() {
+            return this.consoleArg;
+        }
 
     }
 
