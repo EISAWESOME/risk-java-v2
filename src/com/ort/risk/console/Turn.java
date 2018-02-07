@@ -22,35 +22,17 @@ public class Turn {
         System.out.println("==========================================================\n\n");
 
 
-        //The player pick the actions he wish to do this turn
-        int chosenAction = 0;
-        System.out.println("Que faire ce tour ? ");
-        System.out.println("\t[0] Deploiement");
-        System.out.println("\t[1] Guerre");
-        System.out.println("\t[2] Renforcement");
-        try {
-            do {
-                chosenAction = Integer.parseInt(br.readLine());
-            } while ( (chosenAction < 0 || chosenAction > 2)
-                    || (currentPlayer.getReinforcementRegions().size() == 0 && chosenAction == 2)
-                    || (currentPlayer.getWarRegions().size() == 0 && chosenAction == 1));
-        } catch (Exception ex) {
 
+        Deployment.execute(currentPlayer);
+
+        if(currentPlayer.getWarRegions().size() > 0){
+            War.execute(currentPlayer);
         }
 
-        switch(chosenAction){
-            case 0:
-                Deployment.execute(currentPlayer);
-                break;
-            case 1:
-                War.execute(currentPlayer);
-                break;
-            case 2:
-                Reinforcement.execute(currentPlayer);
-                break;
+        if(currentPlayer.getReinforcementRegions().size() > 0) {
+            Reinforcement.execute(currentPlayer);
         }
 
-        //currentPlayer.executeDeployment();
 
 
         System.out.println("\n\n==========================================================");

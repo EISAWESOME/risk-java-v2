@@ -147,7 +147,7 @@ public class Play {
 
             boolean isHuman = true;
 
-            switch(playerIsHuman){
+            switch (playerIsHuman) {
                 case "y":
                     isHuman = true;
                     break;
@@ -176,6 +176,7 @@ public class Play {
         while (notOccupiedRegions.size() > 0) {
             for (int p = 0; p < mapObj.getPlayerList().size() && notOccupiedRegions.size() > 0; p++) {
                 int selectedRegionIndex = 0;
+                Player currentPlayer = mapObj.getPlayerList().get(p);
                 //Random mode
                 if (exMode == ExecMode.RANDOM.value()) {
                     selectedRegionIndex = (int) (Math.random() * notOccupiedRegions.size());
@@ -184,26 +185,32 @@ public class Play {
                 //Console mode
                 if (exMode == ExecMode.CONSOLE.value()) {
                     System.out.println("\n==========================================================");
-                    System.out.println("\t\tCHOIX DU JOUEUR " + mapObj.getPlayerList().get(p).getName());
+                    System.out.println("\t\tCHOIX DU JOUEUR " + currentPlayer.getName());
                     System.out.println("==========================================================\n");
                     System.out.println("Regions neutres : ");
                     for (int nor = 0; nor < notOccupiedRegions.size(); nor++) {
                         System.out.println("\t[" + nor + "]" + notOccupiedRegions.get(nor).getName());
                     }
-                    try {
-                        do {
-                            System.out.println("Choix de la region ? ");
-                            selectedRegionIndex = Integer.parseInt(br.readLine());
-                        } while (selectedRegionIndex >= notOccupiedRegions.size() || selectedRegionIndex < 0);
-                    } catch (Exception ex) {
 
+                    if (currentPlayer.getIsHuman()) {
+                        try {
+                            do {
+                                System.out.println("Choix de la region ? ");
+                                selectedRegionIndex = Integer.parseInt(br.readLine());
+                            } while (selectedRegionIndex >= notOccupiedRegions.size() || selectedRegionIndex < 0);
+                        } catch (Exception ex) {
+
+                        }
                     }
+
+                    if (!currentPlayer.getIsHuman()) {
+                        /* TODO DYLAN */
+                    }
+
                 }
 
                 //Both region and zone list references the same region objects
                 //Hence, change flags in the region list would change them in the zone list too
-
-                Player currentPlayer = mapObj.getPlayerList().get(p);
                 Region chosenRegion = notOccupiedRegions.get(selectedRegionIndex);
 
                 DeploymentAction.attribRegion(currentPlayer, chosenRegion);
@@ -229,6 +236,8 @@ public class Play {
                 List<Region> playerRegions = currentPlayer.getControlledRegions();
                 int selectedRegionIndex = 0;
                 int nbTroopsToDeploy = 0;
+
+
                 System.out.println("\n==========================================================");
                 System.out.println("\t\tDEPLOIEMENT DE " + currentPlayer.getName());
                 System.out.println("==========================================================\n");
@@ -243,24 +252,37 @@ public class Play {
                         System.out.println("\t[" + cr + "] " + currentRegion.getName() + " - Nb troupes : " + currentRegion.getDeployedTroops());
                     }
 
-                    try {
-                        do {
-                            System.out.println("Choix de la region ? ");
-                            selectedRegionIndex = Integer.parseInt(br.readLine());
-                        } while (selectedRegionIndex >= playerRegions.size() || selectedRegionIndex < 0);
-                    } catch (Exception ex) {
+                    if (currentPlayer.getIsHuman()) {
+                        try {
+                            do {
+                                System.out.println("Choix de la region ? ");
+                                selectedRegionIndex = Integer.parseInt(br.readLine());
+                            } while (selectedRegionIndex >= playerRegions.size() || selectedRegionIndex < 0);
+                        } catch (Exception ex) {
 
+                        }
+                    }
+
+                    if (!currentPlayer.getIsHuman()) {
+                        /* TODO DYLAN */
                     }
 
                     //Select number of troop to deploy
                     System.out.println("Combien de troupes deployer sur la region de " + playerRegions.get(selectedRegionIndex).getName());
-                    try {
-                        do {
-                            System.out.println(" (1-" + currentPlayer.getNbTroops() + ") ?");
-                            nbTroopsToDeploy = Integer.parseInt(br.readLine());
-                        } while (nbTroopsToDeploy < 1 || nbTroopsToDeploy > currentPlayer.getNbTroops());
-                    } catch (Exception ex) {
 
+                    if (currentPlayer.getIsHuman()) {
+                        try {
+                            do {
+                                System.out.println(" (1-" + currentPlayer.getNbTroops() + ") ?");
+                                nbTroopsToDeploy = Integer.parseInt(br.readLine());
+                            } while (nbTroopsToDeploy < 1 || nbTroopsToDeploy > currentPlayer.getNbTroops());
+                        } catch (Exception ex) {
+
+                        }
+                    }
+
+                    if (!currentPlayer.getIsHuman()) {
+                        /* TODO DYLAN */
                     }
 
                     Region selectedRegion = currentPlayer.getControlledRegions().get(selectedRegionIndex);
@@ -273,8 +295,9 @@ public class Play {
                         System.out.println("\n==========================================================\n");
                     }
                 }
+                System.out.println("\n==========================================================\n");
+
             }
-            System.out.println("\n==========================================================\n");
         }
 
         //Random mode

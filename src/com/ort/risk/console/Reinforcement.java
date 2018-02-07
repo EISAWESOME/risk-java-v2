@@ -38,13 +38,19 @@ public class Reinforcement {
 
                 System.out.println("\t[0] Fin du tour");
                 System.out.println("\t[1] Renforcer une région");
-                try {
-                    do {
-                        System.out.println("Quel est votre choix ? ");
-                        reinfDecision = Integer.parseInt(br.readLine());
-                    } while (reinfDecision < 0 || reinfDecision > 1);
-                } catch (Exception ex) {
+                if(player.getIsHuman()) {
+                    try {
+                        do {
+                            System.out.println("Quel est votre choix ? ");
+                            reinfDecision = Integer.parseInt(br.readLine());
+                        } while (reinfDecision < 0 || reinfDecision > 1);
+                    } catch (Exception ex) {
 
+                    }
+                }
+
+                if(!player.getIsHuman()) {
+                    /* TODO DYLAN */
                 }
 
             }
@@ -64,13 +70,20 @@ public class Reinforcement {
                         System.out.println("\t[" + rr + "] " + currentRegion.getName() + " - Nb troupes : " + currentRegion.getDeployedTroops());
                     }
 
-                    try {
-                        do {
-                            System.out.println("Choix de la region de départ ? ");
-                            selectedStartRegionIndex = Integer.parseInt(br.readLine());
-                        } while (selectedStartRegionIndex >= reinforcementRegions.size() || selectedStartRegionIndex < 0);
-                    } catch (Exception ex) {
+                    if(player.getIsHuman()) {
+                        try {
+                            do {
+                                System.out.println("Choix de la region de départ ? ");
+                                selectedStartRegionIndex = Integer.parseInt(br.readLine());
+                            }
+                            while (selectedStartRegionIndex >= reinforcementRegions.size() || selectedStartRegionIndex < 0);
+                        } catch (Exception ex) {
 
+                        }
+                    }
+
+                    if(!player.getIsHuman()) {
+                        /* TODO DYLAN */
                     }
                     System.out.println("\n==========================================================\n");
                 }
@@ -97,13 +110,19 @@ public class Reinforcement {
                         System.out.println("\t[" + wt + "] " + currentRegion.getName() + " - Nb troupes : " + currentRegion.getDeployedTroops());
                     }
 
-                    try {
-                        do {
-                            System.out.println("Choix de la region fournisseuse ? ");
-                            selectedEndRegionIndex = Integer.parseInt(br.readLine());
-                        } while (selectedEndRegionIndex >= allReinfProviders.size() || selectedEndRegionIndex < 0);
-                    } catch (Exception ex) {
+                    if(player.getIsHuman()) {
+                        try {
+                            do {
+                                System.out.println("Choix de la region fournisseuse ? ");
+                                selectedEndRegionIndex = Integer.parseInt(br.readLine());
+                            } while (selectedEndRegionIndex >= allReinfProviders.size() || selectedEndRegionIndex < 0);
+                        } catch (Exception ex) {
 
+                        }
+                    }
+
+                    if(!player.getIsHuman()) {
+                        /* TODO DYLAN */
                     }
                 }
 
