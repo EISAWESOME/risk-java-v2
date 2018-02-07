@@ -17,7 +17,7 @@ public class Reinforcement {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("==========================================================");
-        System.out.println("\t\t\tRENFORCEMENT ");
+        System.out.println("\t\tRENFORCEMENT ");
         System.out.println("==========================================================");
         while(reinforcementRegions.size() >= 1){
 
@@ -120,8 +120,6 @@ public class Reinforcement {
                 Move reinfMove = startRegion.getFrontierReinfMove(endRegionName);
 
                 //reinfMove.execute(player);
-
-
 
 
             } else {

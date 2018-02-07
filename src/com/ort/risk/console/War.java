@@ -34,12 +34,12 @@ public class War {
             }
 
             if (exMode == Launcher.ExecMode.CONSOLE.value()) {
-
+                System.out.println("Quel est votre choix ? ");
                 System.out.println("\t[0] Arreter la guerre");
                 System.out.println("\t[1] Lancer une attaque");
                 try {
                     do {
-                        System.out.println("Quel est votre choix ? ");
+                        System.out.println("(0-1)");
                         warDecision = Integer.parseInt(br.readLine());
                     } while (warDecision < 0 || warDecision > 1);
                 } catch (Exception ex) {
@@ -58,7 +58,7 @@ public class War {
 
                 //Console input mode
                 if (exMode == Launcher.ExecMode.CONSOLE.value()) {
-                    System.out.println("Region prête à la guerre :");
+                    System.out.println("Regions prête à la guerre :");
                     for (int wr = 0; wr < warStartRegions.size(); wr++) {
                         Region currentRegion = warStartRegions.get(wr);
                         System.out.println("\t[" + wr + "] " + currentRegion.getName() + " - Nb troupes : " + currentRegion.getDeployedTroops());
@@ -99,7 +99,7 @@ public class War {
 
                     try {
                         do {
-                            System.out.println("Choix de la region à attaquer ? ");
+                            System.out.println("(0-" + allWarTargets.size() + ")");
                             selectedEndRegionIndex = Integer.parseInt(br.readLine());
                         } while (selectedEndRegionIndex >= allWarTargets.size() || selectedEndRegionIndex < 0);
                     } catch (Exception ex) {
@@ -151,11 +151,12 @@ public class War {
 
                 int nbAttack = 0;
 
+                System.out.println("Choisissez le nombre de troupes à envoyer pour l'attaque");
                 try {
                     do {
-                        System.out.println("\tNombre de troupes a envoyer pour l'attaque ? (1-" + Math.min(3,startRegion.getDeployedTroops()) + ")");
+                        System.out.println("(1-" + Math.min(3, startRegion.getDeployedTroops()) + ")");
                         nbAttack = Integer.parseInt(br.readLine());
-                    } while (nbAttack < 0 || nbAttack > Math.min(3,startRegion.getDeployedTroops()));
+                    } while (nbAttack < 0 || nbAttack > Math.min(3, startRegion.getDeployedTroops()));
                 } catch (Exception ex) {
 
                 }
@@ -164,18 +165,18 @@ public class War {
                 Player defPlayer = mapObj.getOwnerOfRegion(endRegion);
                 int nbDef = 0;
 
+                System.out.println("\n" + defPlayer.getName() + ", combien de troupes vont defendre l'attaque ?");
                 try {
                     do {
-                        System.out.println("\t" + defPlayer.getName() +  ", combien de troupes vont defendre l'attaque ? (1-"+ Math.min(2,endRegion.getDeployedTroops()) + ")");
+                        System.out.println("(1-" + Math.min(2, endRegion.getDeployedTroops()) + ")");
                         nbDef = Integer.parseInt(br.readLine());
-                    } while (nbDef < 0 || nbDef> Math.min(2,endRegion.getDeployedTroops()));
+                    } while (nbDef < 0 || nbDef > Math.min(2, endRegion.getDeployedTroops()));
                 } catch (Exception ex) {
 
                 }
 
 
-
-                Object[] result = availableMoves.get(selectedMoveIndex).execute(startRegion, player, endRegion, nbAttack , nbDef);
+                Object[] result = availableMoves.get(selectedMoveIndex).execute(startRegion, player, endRegion, nbAttack, nbDef);
                 /**
                  * 0 : Jet de dés de l'attaque
                  * 1 : jet de dès de la defense
@@ -183,25 +184,25 @@ public class War {
                  * 3 : [ atkLoss, defLoss ]
                  * 4 : Prise du territoire ?
                  */
-                switch((Integer)result[2]){
-                    case -1 :
+                switch ((Integer) result[2]) {
+                    case -1:
                         System.out.println("\nL'assaut est un echec ! ");
                         break;
-                    case 0 :
+                    case 0:
                         System.out.println("\nLes pertes sont égales des deux cotés ! ");
                         break;
-                    case 1 :
+                    case 1:
                         System.out.println("\nL'assaut est un succès ! ");
                         break;
                 }
 
-                Integer[] arrLoss = (Integer[])result[3];
+                Integer[] arrLoss = (Integer[]) result[3];
 
                 System.out.println("L'attaque a perdu " + arrLoss[0] + " de ses " + nbAttack + " troupes engagées !");
                 System.out.println("La défense a perdu " + arrLoss[1] + " de ses " + nbDef + " troupes engagées !");
 
-                if((boolean)result[4]){
-                    System.out.println("Tout les troupes de la région attaquées ont été vaincu, " + player.getName() + " s'empare de la region de " + endRegion.getName() +" !!\n");
+                if ((boolean) result[4]) {
+                    System.out.println("Tout les troupes de la région attaquées ont été vaincu, " + player.getName() + " s'empare de la region de " + endRegion.getName() + " !!\n");
                 }
 
                 System.out.println("\n==========================================================\n");

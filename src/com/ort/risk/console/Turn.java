@@ -18,7 +18,7 @@ public class Turn {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("\n\n==========================================================");
-        System.out.println("\t\t\t\t DEBUT DU TOUR DE " + currentPlayer.getName());
+        System.out.println("\t\tDEBUT DU TOUR DE " + currentPlayer.getName());
         System.out.println("==========================================================\n\n");
 
 
@@ -31,7 +31,9 @@ public class Turn {
         try {
             do {
                 chosenAction = Integer.parseInt(br.readLine());
-            } while (chosenAction < 0 || chosenAction > 2 );
+            } while ( (chosenAction < 0 || chosenAction > 2)
+                    || (currentPlayer.getReinforcementRegions().size() == 0 && chosenAction == 2)
+                    || (currentPlayer.getWarRegions().size() == 0 && chosenAction == 1));
         } catch (Exception ex) {
 
         }
@@ -52,7 +54,7 @@ public class Turn {
 
 
         System.out.println("\n\n==========================================================");
-        System.out.println("\t\t\tFIN DU TOUR DE " + currentPlayer.getName());
+        System.out.println("\t\tFIN DU TOUR DE " + currentPlayer.getName());
         System.out.println("==========================================================\n\n");
 
         //Print end of turn info only in console mode
