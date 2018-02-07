@@ -214,7 +214,7 @@ public class War {
                 }
 
 
-                Object[] result = availableMoves.get(selectedMoveIndex).execute(startRegion, player, endRegion, nbAttack, nbDef);
+                Object[] result = availableMoves.get(selectedMoveIndex).execute(startRegion, endRegion, player, nbAttack, nbDef);
                 /**
                  * 0 : Jet de dés de l'attaque
                  * 1 : jet de dès de la defense

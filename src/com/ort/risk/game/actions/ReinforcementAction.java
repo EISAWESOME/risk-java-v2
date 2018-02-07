@@ -7,7 +7,12 @@ import com.ort.risk.model.Zone;
 import java.util.List;
 
 public class ReinforcementAction {
-    public void directReinforcement(Region startRegion, Region endRegion){
+    public static Object[] execute(Region startRegion, Region endRegion, int nbTroops){
 
+        Object[] ret = new Object[5];
+
+
+
+        return ret;
     }
 }

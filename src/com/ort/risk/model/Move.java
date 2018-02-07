@@ -1,5 +1,6 @@
 package com.ort.risk.model;
 
+import com.ort.risk.game.actions.ReinforcementAction;
 import com.ort.risk.game.actions.WarAction;
 
 /**
@@ -41,20 +42,31 @@ public class Move {
 				this.getClass().getName(), this.name);
 	}
 
-	public Object[] execute(Region atkRegion, Player atkPlayer, Region defRegion, int nbAttack, int nbDef){
+	public Object[] execute(Region startRegion, Region endRegion, Player atkPlayer, int nbAttack, int nbDef){
 		Object[] ret = null;
 		switch(this.getName()){
-			case "Reinforcement":
-				System.out.println(atkPlayer.getName() + " utilise 'Renforcement'");
-				System.out.println("Mais cela n'a aucun effet...\n");
-				break;
 			case "Assault":
 				//System.out.println(atkPlayer.getName() + " utilise 'Assaut'");
-				ret = WarAction.Assault(atkRegion, atkPlayer, defRegion, nbAttack, nbDef);
+				ret = WarAction.Assault(startRegion, atkPlayer, endRegion, nbAttack, nbDef);
 				//System.out.println("Mais cela n'a aucun effet...\n");
 				break;
 			default:
-				System.out.println("Action inconnu ???\n");
+				System.out.println("Y'a erreur\n");
+		}
+		return ret;
+	}
+
+	public Object[] execute(Region startRegion, Region endRegion, int nbTroops){
+		Object[] ret = null;
+		switch(this.getName()){
+			case "Reinforcement":
+
+				ret = ReinforcementAction.execute(startRegion, endRegion, nbTroops);
+				//System.out.println(atkPlayer.getName() + " utilise 'Renforcement'");
+				//System.out.println("Mais cela n'a aucun effet...\n");
+				break;
+			default:
+				System.out.println("Y'a erreur\n");
 		}
 		return ret;
 	}

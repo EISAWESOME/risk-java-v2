@@ -136,21 +136,34 @@ public class Reinforcement {
                 Region startRegion = reinforcementRegions.get(selectedStartRegionIndex);
                 String endRegionName = allReinfProviders.get(selectedEndRegionIndex).getName();
 
+                Region endRegion = mapObj.getRegionByName(endRegionName);
+
                 Move reinfMove = startRegion.getFrontierReinfMove(endRegionName);
 
-                //reinfMove.execute(player);
+                System.out.println("Combien de troupes souhaitez-vous deplacer ? ");
+                int nbTroops = 1;
+                if(player.getIsHuman()) {
+                    try {
+                        do {
+                            System.out.println("(1-" + (endRegion.getDeployedTroops() - 1) + ")");
+                            nbTroops = Integer.parseInt(br.readLine());
+                        } while (nbTroops >= endRegion.getDeployedTroops() - 1 || nbTroops < 1);
+                    } catch (Exception ex) {
+
+                    }
+                }
+
+                if(!player.getIsHuman()) {
+                    /* TODO DYLAN */
+                }
+
+                reinfMove.execute(startRegion, endRegion, nbTroops);
 
 
             } else {
                 System.out.println("\n" + player.getName() + " a fini de renforcer ces régions !");
                 return;
             }
-
-
-
-
-
-
 
         }
 
