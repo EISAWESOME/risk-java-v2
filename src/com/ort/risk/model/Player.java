@@ -84,4 +84,18 @@ public class Player {
 		}
 		return warRegions;
 	}
+
+
+	/**
+	 * @return the list of region from where the player can initiate a reinforcement
+	 */
+	public List<Region> getReinforcementRegions(){
+		List<Region> warRegions = new ArrayList<Region>();
+		for(Region region : this.getControlledRegions()){
+			if(region.isReinforcementRegion(this) != null){
+				warRegions.add(region.isReinforcementRegion(this));
+			}
+		}
+		return warRegions;
+	}
 }

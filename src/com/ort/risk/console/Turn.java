@@ -1,7 +1,6 @@
 package com.ort.risk.console;
 
 import com.ort.risk.game.Launcher;
-import com.ort.risk.game.actions.War;
 import com.ort.risk.model.Map;
 import com.ort.risk.model.Player;
 
@@ -18,9 +17,9 @@ public class Turn {
         int exMode = mapObj.getExMode();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.println("\n\n==================================================================================================================");
+        System.out.println("\n\n==========================================================");
         System.out.println("\t\t\t\t DEBUT DU TOUR DE " + currentPlayer.getName());
-        System.out.println("==================================================================================================================\n\n");
+        System.out.println("==========================================================\n\n");
 
 
         //The player pick the actions he wish to do this turn
@@ -31,7 +30,6 @@ public class Turn {
         System.out.println("\t[2] Renforcement");
         try {
             do {
-                System.out.println("(0-2)");
                 chosenAction = Integer.parseInt(br.readLine());
             } while (chosenAction < 0 || chosenAction > 2 );
         } catch (Exception ex) {
@@ -46,6 +44,7 @@ public class Turn {
                 War.execute(currentPlayer);
                 break;
             case 2:
+                Reinforcement.execute(currentPlayer);
                 break;
         }
 

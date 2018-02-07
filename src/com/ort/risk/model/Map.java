@@ -2,6 +2,7 @@ package com.ort.risk.model;
 
 import java.util.*;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -221,5 +222,46 @@ public class Map {
 
 	public void setExMode(int exMode) {
 		this.exMode = exMode;
+	}
+
+	public void conquerRegion(Player conquerer, Region conqueredRegion){
+		for(Player p : this.getPlayerList()){
+			List<Region> controlledRegions = p.getControlledRegions();
+			if(controlledRegions.contains(conqueredRegion)){
+				//The losing player lose control of the region
+				p.getControlledRegions().remove(conqueredRegion);
+				// The conquerer gain control of the region
+				conquerer.addControlledRegion(conqueredRegion);
+			}
+		}
+	}
+
+
+	public Region getRegionByName(String regionName){
+		Region matchedRegion = null;
+		for(Player p : this.getPlayerList()){
+			List<Region> controlledRegions = p.getControlledRegions();
+			Predicate<Region> pre = e -> e.getName().equalsIgnoreCase(regionName);
+			if(controlledRegions.stream().anyMatch(pre)){
+
+				List<Region> a = controlledRegions.stream().filter(o -> o.getName().equals(regionName)).collect(Collectors.toList());
+				matchedRegion =  a.get(0);
+
+			}
+		}
+		return matchedRegion;
+	}
+
+	public Player getOwnerOfRegion(Region region){
+		Player matchedPlayer = null;
+		for(Player p : this.getPlayerList()){
+			List<Region> controlledRegions = p.getControlledRegions();
+			if(controlledRegions.contains(region)){
+				matchedPlayer = p;
+
+			}
+		}
+		return matchedPlayer;
+
 	}
 }

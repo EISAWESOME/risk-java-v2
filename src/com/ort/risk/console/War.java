@@ -1,4 +1,4 @@
-package com.ort.risk.game.actions;
+package com.ort.risk.console;
 
 import com.ort.risk.game.Launcher;
 import com.ort.risk.model.*;
@@ -6,7 +6,6 @@ import com.ort.risk.model.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class War {
 
@@ -21,9 +20,7 @@ public class War {
         System.out.println("\t\t\tGUERRE ");
         System.out.println("==========================================================");
 
-        if(warStartRegions.size() > 0)
-
-        while (warStartRegions.size() > 0) {
+        while (warStartRegions.size() >= 1) {
 
             int warDecision = 0;
 
@@ -49,11 +46,8 @@ public class War {
 
                 }
 
-            }
+                System.out.println("\n==========================================================\n");
 
-            if (exMode == Launcher.ExecMode.GUI.value()) {
-
-                /* TODO : Choix de l'action de guerre GUI */
             }
 
 
@@ -87,11 +81,6 @@ public class War {
 
                 }
 
-                //GUI input mode
-                if (exMode == Launcher.ExecMode.GUI.value()) {
-                    /* TODO : Selectionner la region start pour commencer l'attaque*/
-                }
-
                 Region selectedStartRegion = warStartRegions.get(selectedStartRegionIndex);
 
 
@@ -116,6 +105,8 @@ public class War {
                     } catch (Exception ex) {
 
                     }
+
+                    System.out.println("\n==========================================================\n");
                 }
 
                 //Random mode
@@ -123,11 +114,6 @@ public class War {
 
                     selectedEndRegionIndex = (int) ((Math.random() * (allWarTargets.size())));
 
-                }
-
-                //GUI input mode
-                if (exMode == Launcher.ExecMode.GUI.value()) {
-                    /* TODO : Selectionner la region end à attaquer*/
                 }
 
                 //Fetch the list of war move for the given start and end region
@@ -162,15 +148,67 @@ public class War {
                     selectedMoveIndex = (int) ((Math.random() * (availableMoves.size())));
                 }
 
-                //GUI input
-                if (exMode == Launcher.ExecMode.GUI.value()) {
-                    /* TODO : Renseigner le mode choisis pour l'attaque*/
+
+                int nbAttack = 0;
+
+                try {
+                    do {
+                        System.out.println("\tNombre de troupes a envoyer pour l'attaque ? (1-" + Math.min(3,startRegion.getDeployedTroops()) + ")");
+                        nbAttack = Integer.parseInt(br.readLine());
+                    } while (nbAttack < 0 || nbAttack > Math.min(3,startRegion.getDeployedTroops()));
+                } catch (Exception ex) {
 
                 }
 
-                availableMoves.get(selectedMoveIndex).execute(player);
+                Region endRegion = mapObj.getRegionByName(endRegionName);
+                Player defPlayer = mapObj.getOwnerOfRegion(endRegion);
+                int nbDef = 0;
+
+                try {
+                    do {
+                        System.out.println("\t" + defPlayer.getName() +  ", combien de troupes vont defendre l'attaque ? (1-"+ Math.min(2,endRegion.getDeployedTroops()) + ")");
+                        nbDef = Integer.parseInt(br.readLine());
+                    } while (nbDef < 0 || nbDef> Math.min(2,endRegion.getDeployedTroops()));
+                } catch (Exception ex) {
+
+                }
+
+
+
+                Object[] result = availableMoves.get(selectedMoveIndex).execute(startRegion, player, endRegion, nbAttack , nbDef);
+                /**
+                 * 0 : Jet de dés de l'attaque
+                 * 1 : jet de dès de la defense
+                 * 2 : Victoire ou defaite
+                 * 3 : [ atkLoss, defLoss ]
+                 * 4 : Prise du territoire ?
+                 */
+                switch((Integer)result[2]){
+                    case -1 :
+                        System.out.println("\nL'assaut est un echec ! ");
+                        break;
+                    case 0 :
+                        System.out.println("\nLes pertes sont égales des deux cotés ! ");
+                        break;
+                    case 1 :
+                        System.out.println("\nL'assaut est un succès ! ");
+                        break;
+                }
+
+                Integer[] arrLoss = (Integer[])result[3];
+
+                System.out.println("L'attaque a perdu " + arrLoss[0] + " de ses " + nbAttack + " troupes engagées !");
+                System.out.println("La défense a perdu " + arrLoss[1] + " de ses " + nbDef + " troupes engagées !");
+
+                if((boolean)result[4]){
+                    System.out.println("Tout les troupes de la région attaquées ont été vaincu, " + player.getName() + " s'empare de la region de " + endRegion.getName() +" !!\n");
+                }
+
+                System.out.println("\n==========================================================\n");
+
 
             } else {
+                System.out.println("\n" + player.getName() + " a arreter la guerre !");
                 // If the player choose to stop the war
                 return;
             }

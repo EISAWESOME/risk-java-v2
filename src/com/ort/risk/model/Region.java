@@ -132,6 +132,18 @@ public class Region {
 		return null;
 	}
 
+	public Region isReinforcementRegion(Player player){
+		if(this.getDeployedTroops() >= 2){
+			for(Frontier frontier : this.getFrontiers()){
+				if(frontier.isReinforcementFrontier(player)){
+					return this;
+				}
+			}
+			return null;
+		}
+		return null;
+	}
+
 	/**
 	 *
 	 * @param player
@@ -147,6 +159,19 @@ public class Region {
 
 		return allWarTargets;
 	}
+
+	public List<Region> getAllReinforcementTargets(Player player){
+		List<Region> allReinfProviders = new ArrayList<Region>();
+		for(Frontier frontier : this.getFrontiers()){
+			if(frontier.getReinforcementTarget(player) != null){
+				allReinfProviders.add(frontier.getReinforcementTarget(player));
+			}
+		}
+
+		return allReinfProviders;
+	}
+
+
 
 	public List<Move> getFrontierWarMoves(String endRegionName){
 		List<Move> warMoves = new ArrayList<Move>();
@@ -164,5 +189,22 @@ public class Region {
 	}
 
 
-	
+	public Move getFrontierReinfMove(String endRegionName){
+		for(Frontier frontier : this.getFrontiers()){
+			if(frontier.getRegionEndName().equalsIgnoreCase(endRegionName)){
+				for(Move move : frontier.getMoves()){
+					if (move.getName().equalsIgnoreCase("Reinforcement")){
+						return move;
+					}
+				}
+			}
+
+		}
+		return null;
+
+	}
+
+
+
+
 }

@@ -75,7 +75,7 @@ public class Play {
         //Random mode
         if (exMode == ExecMode.RANDOM.value()) {
             selectedModeIndex = (int)(Math.random() * allModes.size());
-            //selectedModeIndex = 3;
+            //selectedModeIndex = 2;
         }
 
         //Console mode
@@ -138,43 +138,44 @@ public class Play {
         List<Region> notOccupiedRegions = mapObj.getRegions().stream()
                 .filter(p -> !p.getIsOccupied()).collect(Collectors.toList());
 
-        while (notOccupiedRegions.size() > 1) {
-            for (int p = 0; p < mapObj.getPlayerList().size(); p++) {
-                int selectedRegionIndex = 0;
-                //Random mode
-                if (exMode == ExecMode.RANDOM.value()) {
-                    selectedRegionIndex = (int) (Math.random() * notOccupiedRegions.size());
-                }
-
-                //Console mode
-                if (exMode == ExecMode.CONSOLE.value()) {
-                    System.out.println("\tCHOIX DU JOUEUR " + mapObj.getPlayerList().get(p).getName());
-                    for (int nor = 0; nor < notOccupiedRegions.size(); nor++) {
-                        System.out.println("[" + nor + "]" + notOccupiedRegions.get(nor).getName());
+        while (notOccupiedRegions.size() > 0) {
+            for (int p = 0; p < mapObj.getPlayerList().size() && notOccupiedRegions.size() > 0 ; p++) {
+                    int selectedRegionIndex = 0;
+                    //Random mode
+                    if (exMode == ExecMode.RANDOM.value()) {
+                        selectedRegionIndex = (int) (Math.random() * notOccupiedRegions.size());
                     }
-                    try {
-                        do {
-                            System.out.println("Choix de la region ? ");
-                            selectedRegionIndex = Integer.parseInt(br.readLine());
-                        } while (selectedRegionIndex >= notOccupiedRegions.size() || selectedRegionIndex < 0);
+
+                    //Console mode
+                    if (exMode == ExecMode.CONSOLE.value()) {
+                        System.out.println("\tCHOIX DU JOUEUR " + mapObj.getPlayerList().get(p).getName());
+                        for (int nor = 0; nor < notOccupiedRegions.size(); nor++) {
+                            System.out.println("[" + nor + "]" + notOccupiedRegions.get(nor).getName());
+                        }
+                        try {
+                            do {
+                                System.out.println("Choix de la region ? ");
+                                selectedRegionIndex = Integer.parseInt(br.readLine());
+                            } while (selectedRegionIndex >= notOccupiedRegions.size() || selectedRegionIndex < 0);
 
 
-                    } catch (Exception ex) {
+                        } catch (Exception ex) {
 
+                        }
                     }
-                }
 
-                //Both region and zone list references the same region objects
-                //Hence, change flags in the region list would change them in the zone list too
+                    //Both region and zone list references the same region objects
+                    //Hence, change flags in the region list would change them in the zone list too
 
-                Player currentPlayer = mapObj.getPlayerList().get(p);
-                Region chosenRegion = notOccupiedRegions.get(selectedRegionIndex);
+                    Player currentPlayer = mapObj.getPlayerList().get(p);
+                    Region chosenRegion = notOccupiedRegions.get(selectedRegionIndex);
 
-                DeploymentAction.attribRegion(currentPlayer, chosenRegion);
+                    DeploymentAction.attribRegion(currentPlayer, chosenRegion);
 
 
-                notOccupiedRegions = notOccupiedRegions.stream()
-                        .filter(po -> !po.getIsOccupied()).collect(Collectors.toList());
+                    notOccupiedRegions = notOccupiedRegions.stream()
+                            .filter(po -> !po.getIsOccupied()).collect(Collectors.toList());
+
             }
         }
         //Initial deployment
@@ -229,9 +230,9 @@ public class Play {
                     DeploymentAction.deployTroops(selectedRegion, nbTroopsToDeploy);
 
                     currentPlayer.changeNbTroops(-nbTroopsToDeploy);
-                    System.out.println("\n==================================================================================================================\n");
+                    System.out.println("\n==========================================================");
                 }
-                System.out.println("\n==================================================================================================================\n");
+                System.out.println("==========================================================\n");
 
             }
         }
@@ -250,7 +251,7 @@ public class Play {
         }
 
         System.out.println("\n\n==========================================================");
-        System.out.println("\t\t\tDEBUT DE LA PARTIE");
+        System.out.println("\t\t\t\tDEBUT DE LA PARTIE");
         System.out.println("==========================================================");
 
 

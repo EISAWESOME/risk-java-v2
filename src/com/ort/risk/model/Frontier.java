@@ -96,6 +96,23 @@ public class Frontier {
 		}
 	}
 
+	public boolean isReinforcementFrontier(Player player){
+		Predicate<Region> rEnd = e -> e.getName().equalsIgnoreCase(this.getRegionEndName());
+
+		//If the player control both the end region
+		if(player.getControlledRegions().stream().anyMatch(rEnd)){
+			for(Move move : this.getMoves()){
+				if(move.getName().equalsIgnoreCase("Reinforcement")){
+					return true;
+				}
+			}
+			return false;
+		} else {
+			return false;
+		}
+	}
+
+
 	public Region getWarTarget(Player player){
 		Predicate<Region> p = e -> e.getName().equalsIgnoreCase(this.getRegionEndName());
 		Map mapObj = Map.getInstance();
@@ -105,6 +122,29 @@ public class Frontier {
 		if(!player.getControlledRegions().stream().anyMatch(p)){
 			for(Move move : this.getMoves()){
 				if(!move.getName().equalsIgnoreCase("Reinforcement")){
+					List<Region> target = allRegions.stream()
+							.filter(r -> r.getName().equalsIgnoreCase(this.getRegionEndName() ))
+							.collect(Collectors.toList());
+
+					return target.get(0);
+				}
+			}
+			return null;
+		} else {
+			return null;
+		}
+	}
+
+
+	public Region getReinforcementTarget(Player player){
+		Predicate<Region> p = e -> e.getName().equalsIgnoreCase(this.getRegionEndName());
+		Map mapObj = Map.getInstance();
+		List<Region> allRegions = mapObj.getRegions();
+
+		//If the player control the end region
+		if(player.getControlledRegions().stream().anyMatch(p)){
+			for(Move move : this.getMoves()){
+				if(move.getName().equalsIgnoreCase("Reinforcement")){
 					List<Region> target = allRegions.stream()
 							.filter(r -> r.getName().equalsIgnoreCase(this.getRegionEndName() ))
 							.collect(Collectors.toList());
