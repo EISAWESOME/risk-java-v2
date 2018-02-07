@@ -24,16 +24,24 @@ import org.w3c.dom.NodeList;
  */
 public class Parser {
     public static void prepMap() {
-    	
-    	RiskProperties prop = RiskProperties.getInstance();
-    	
+
+    	MapFileHandler mapHandler = new MapFileHandler();
+
         Map mapObj = Map.getInstance();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
-            File mapXML = new File(prop.getProperty(RiskProperties.CURRENT_MAP_PATH_PROP) + MapFileHandler.CURRENT_MAP_NAME);
-            Document xml = builder.parse(mapXML);
+
+            if(mapObj.getExMode() == Launcher.ExecMode.GUI.value()){
+                File mapXML = mapHandler.getCurrentMapFile();
+                mapPath = mapXML.getAbsolutePath();
+            } else {
+                mapPath = "resources/map/classic.xml";
+                File mapXML = new File(mapPath);
+            }
+            Document xml = builder.parse(mapPath);
+
             Element root = xml.getDocumentElement();
             XPathFactory xpf = XPathFactory.newInstance();
             XPath path = xpf.newXPath();
