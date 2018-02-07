@@ -3,7 +3,7 @@ package com.ort.risk.game;
 import com.ort.risk.model.*;
 
 
-import java.io.File;
+import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,19 +31,21 @@ public class Parser {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
         /* TODO : La map doit etre importer d'apres un input de l'utilisateur, pas en dur*/
-        String mapPath = "";
+        InputStream in;
+        String mapPath = null;
+        Document xml;
 
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
 
             if(mapObj.getExMode() == Launcher.ExecMode.GUI.value()){
                 File mapXML = mapHandler.getCurrentMapFile();
-                mapPath = mapXML.getAbsolutePath();
+				xml = builder.parse(mapXML);
             } else {
-                mapPath = "resources/map/classic.xml";
-                File mapXML = new File(mapPath);
+                in = Parser.class.getResourceAsStream("resources/classic.xml");
+                xml = builder.parse(in);
             }
-            Document xml = builder.parse(mapPath);
+
 
             Element root = xml.getDocumentElement();
             XPathFactory xpf = XPathFactory.newInstance();
