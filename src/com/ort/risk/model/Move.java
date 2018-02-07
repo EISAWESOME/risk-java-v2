@@ -56,19 +56,13 @@ public class Move {
 		return ret;
 	}
 
-	public Object[] execute(Region startRegion, Region endRegion, int nbTroops){
-		Object[] ret = null;
+	public void execute(Region startRegion, Region endRegion, int nbTroops){
 		switch(this.getName()){
 			case "Reinforcement":
-
-				ret = ReinforcementAction.execute(startRegion, endRegion, nbTroops);
-				//System.out.println(atkPlayer.getName() + " utilise 'Renforcement'");
-				//System.out.println("Mais cela n'a aucun effet...\n");
+				ReinforcementAction.execute(startRegion, endRegion, nbTroops);
 				break;
 			default:
 				System.out.println("Y'a erreur\n");
 		}
-		return ret;
 	}
-	
 }

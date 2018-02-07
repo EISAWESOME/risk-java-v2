@@ -25,6 +25,10 @@ public class Deployment {
         List<Region> playerRegions = player.getControlledRegions();
         //System.out.println(nbRenfort);
 
+        System.out.println("==========================================================");
+        System.out.println("\t\t\tDEPLOIEMENT ");
+        System.out.println("==========================================================");
+
         while (nbDeployMax > 0) {
 
             int selectedRegionIndex = 0;
@@ -51,7 +55,7 @@ public class Deployment {
                     System.out.println("\t[" + cr + "] " + currentRegion.getName() + " - Nb troupes : " + currentRegion.getDeployedTroops());
                 }
 
-                if(player.getIsHuman()) {
+                if (player.getIsHuman()) {
                     try {
                         do {
                             System.out.println("Choix de la region ? ");
@@ -62,14 +66,15 @@ public class Deployment {
                     }
                 }
 
-                if(!player.getIsHuman()) {
+                if (!player.getIsHuman()) {
                     /* TODO DYLAN */
                 }
+                target = playerRegions.get(selectedRegionIndex);
 
                 //Select number of troop to deploy
-                System.out.println("Combien de troupes deployer sur la region de " + playerRegions.get(selectedRegionIndex).getName());
+                System.out.println("Combien de troupes deployer sur la region de " + target.getName());
 
-                if(player.getIsHuman()) {
+                if (player.getIsHuman()) {
                     try {
                         do {
                             System.out.println(" (" + min + "-" + nbDeployMax + ") ?");
@@ -80,10 +85,11 @@ public class Deployment {
                     }
                 }
 
-                if(!player.getIsHuman()) {
+                if (!player.getIsHuman()) {
                     /* TODO DYLAN */
                 }
             }
+
 
             DeploymentAction.deployTroops(target, nbTroopsToDeploy);
             nbDeployMax -= nbTroopsToDeploy;

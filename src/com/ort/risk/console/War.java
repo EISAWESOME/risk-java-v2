@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import java.util.Arrays;
+
 public class War {
 
     public static void execute(Player player) {
@@ -35,7 +37,7 @@ public class War {
 
             if (exMode == Launcher.ExecMode.CONSOLE.value()) {
                 System.out.println("Quel est votre choix ? ");
-                System.out.println("\t[0] Arreter la guerre");
+                System.out.println("\t[0] Passer a la phase de renforcement");
                 System.out.println("\t[1] Lancer une attaque");
                 if(player.getIsHuman()) {
                     try {

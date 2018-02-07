@@ -7,12 +7,14 @@ import com.ort.risk.model.Zone;
 import java.util.List;
 
 public class ReinforcementAction {
-    public static Object[] execute(Region startRegion, Region endRegion, int nbTroops){
-
+    public static void execute(Region regionTo, Region regionFrom, int nbTroops){
         Object[] ret = new Object[5];
 
-
-
-        return ret;
+        //Move n troops from the regionFrom to regionTo
+        //Make sure to leave behind at least one troop
+        if(nbTroops < regionFrom.getDeployedTroops()){
+            regionFrom.changeDeployedTroops( -nbTroops);
+            regionTo.changeDeployedTroops(nbTroops);
+        }
     }
 }

@@ -147,7 +147,7 @@ public class Reinforcement {
                         do {
                             System.out.println("(1-" + (endRegion.getDeployedTroops() - 1) + ")");
                             nbTroops = Integer.parseInt(br.readLine());
-                        } while (nbTroops >= endRegion.getDeployedTroops() - 1 || nbTroops < 1);
+                        } while (nbTroops > endRegion.getDeployedTroops() - 1 || nbTroops < 1);
                     } catch (Exception ex) {
 
                     }
@@ -158,6 +158,8 @@ public class Reinforcement {
                 }
 
                 reinfMove.execute(startRegion, endRegion, nbTroops);
+
+                System.out.println(player.getName() + " à deplacer " + nbTroops + " de " + endRegion.getName() + " jusqu'à " + startRegion.getName() + "!\n");
 
 
             } else {

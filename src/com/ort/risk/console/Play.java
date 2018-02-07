@@ -116,7 +116,6 @@ public class Play {
         System.out.println("\tNb initial de troupes : " + allModes.get(selectedModeIndex).getNbInitTroops());
         System.out.println("\n");
 
-        System.out.println("Liste des joueurs : ");
         int nbTroupePerPlayer = allModes.get(selectedModeIndex).getNbInitTroops();
         for (int n = 1; n <= allModes.get(selectedModeIndex).getNbPlayer(); n++) {
 
@@ -126,7 +125,7 @@ public class Play {
 
             try {
                 do {
-                    System.out.println("Entrez le nom du joueur " + n);
+                    System.out.println("\nEntrez le nom du joueur " + n);
                     playerName = br.readLine();
                 } while (playerName.length() == 0);
 
@@ -152,14 +151,15 @@ public class Play {
                     isHuman = true;
                     break;
                 case "n":
+                    playerName = "(COM)" + playerName;
                     isHuman = false;
                     break;
             }
             // Add players to the map
             mapObj.addPlayer(new Player(playerName, isHuman, n, nbTroupePerPlayer));
 
-            System.out.println("\tNom : " + "Player" + n);
-            System.out.println("\tOrdre de passage : " + n);
+            /*System.out.println("\tNom : " + playerName);
+            System.out.println("\tOrdre de passage : " + n);*/
         }
 
         if (exMode == ExecMode.CONSOLE.value()) {

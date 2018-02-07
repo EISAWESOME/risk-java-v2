@@ -95,10 +95,12 @@ public class Frontier {
 	}
 
 	public boolean isReinforcementFrontier(Player player){
-		Predicate<Region> rEnd = e -> e.getName().equalsIgnoreCase(this.getRegionEndName());
+		Map mapObj = Map.getInstance();
+		//Predicate<Region> rEnd = e -> e.getName().equalsIgnoreCase(this.getRegionEndName());
+		Region regionEnd = mapObj.getRegionByName(this.getRegionEndName());
 
 		//If the player control both the end region
-		if(player.getControlledRegions().stream().anyMatch(rEnd)){
+		if(player.getControlledRegions().contains(regionEnd) && regionEnd.getDeployedTroops() > 1){
 			for(Move move : this.getMoves()){
 				if(move.getName().equalsIgnoreCase("Reinforcement")){
 					return true;
@@ -112,12 +114,12 @@ public class Frontier {
 
 
 	public Region getWarTarget(Player player){
-		Predicate<Region> p = e -> e.getName().equalsIgnoreCase(this.getRegionEndName());
 		Map mapObj = Map.getInstance();
+		Region endRegion = mapObj.getRegionByName(this.getRegionEndName());
 		List<Region> allRegions = mapObj.getRegions();
 
 		//If the player doesnt control a region with that name
-		if(!player.getControlledRegions().stream().anyMatch(p)){
+		if(!player.getControlledRegions().contains(endRegion)){
 			for(Move move : this.getMoves()){
 				if(!move.getName().equalsIgnoreCase("Reinforcement")){
 					List<Region> target = allRegions.stream()
@@ -135,12 +137,12 @@ public class Frontier {
 
 
 	public Region getReinforcementTarget(Player player){
-		Predicate<Region> p = e -> e.getName().equalsIgnoreCase(this.getRegionEndName());
 		Map mapObj = Map.getInstance();
+		Region regionEnd = mapObj.getRegionByName(this.getRegionEndName());
 		List<Region> allRegions = mapObj.getRegions();
 
 		//If the player control the end region
-		if(player.getControlledRegions().stream().anyMatch(p)){
+		if(player.getControlledRegions().contains(regionEnd) && regionEnd.getDeployedTroops() > 1){
 			for(Move move : this.getMoves()){
 				if(move.getName().equalsIgnoreCase("Reinforcement")){
 					List<Region> target = allRegions.stream()

@@ -42,6 +42,7 @@ public class Turn {
         //Print end of turn info only in console mode
         if(exMode == Launcher.ExecMode.CONSOLE.value()){
             System.out.println("Entrez 'e' pour voir les regions controllées par les joueurs ");
+            System.out.println("Appuyez Entrée pour passer au joueur suivant ");
             try {
                 String s = br.readLine();
                 if(s.equals("e")){
