@@ -1,6 +1,9 @@
 package com.ort.risk.ui.views;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
@@ -18,7 +21,17 @@ public class UIGameStage extends CustomStage {
         ColumnConstraints column2 = new ColumnConstraints(150);
         //column2.setHgrow(Priority.ALWAYS);
         mainPane.getColumnConstraints().addAll(column1, column2);
-		
+        
+        // Map image
+        String imgUri = map.getImg();
+        Image mapImg = new Image("");
+        ImageView mapImgView = new ImageView();
+        mapImgView.setImage(mapImg);
+        
+        // Filling main panel
+        // Map View
+        GridPane.setHalignment(mapImgView, HPos.RIGHT);
+		mainPane.add(mapImgView, 1, 0);
 	}
 
 }
