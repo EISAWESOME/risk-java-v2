@@ -72,6 +72,10 @@ public class Player {
         this.isHuman = isHuman;
     }
 
+    public boolean getIsHuman(){
+        return this.isHuman;
+    }
+
     public Player() {
     }
 
