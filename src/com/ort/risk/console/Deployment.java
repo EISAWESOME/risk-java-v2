@@ -21,7 +21,7 @@ public class Deployment {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int min = mapObj.getNbMinReinforcement();
-        int nbDeployMax = calcMaxDeploy.execute(player);
+        int nbDeployMax = DeploymentAction.calcMaxDeploy(player);
         List<Region> playerRegions = player.getControlledRegions();
         //System.out.println(nbRenfort);
 
@@ -72,7 +72,7 @@ public class Deployment {
                 }
             }
 
-            deployTroops.execute(target, nbTroopsToDeploy);
+            DeploymentAction.deployTroops(target, nbTroopsToDeploy);
             nbDeployMax -= nbTroopsToDeploy;
 
             System.out.println(player.getName() + " a deployé (" + nbTroopsToDeploy + ") troupes sur la region de " + target.getName() + " !");

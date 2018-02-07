@@ -62,7 +62,7 @@ public class Play {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println(
-                "__________.___  _______________.\n" +
+                          "__________.___  ______________  _.\n" +
                         "\\______   \\   |/   _____/    |/ _|\n" +
                         " |       _/   |\\_____  \\|      <  \n" +
                         " |    |   \\   |/        \\    |  \\ \n" +
@@ -74,8 +74,8 @@ public class Play {
 
         //Random mode
         if (exMode == ExecMode.RANDOM.value()) {
-            //selectedModeIndex = (int)(Math.random() * allModes.size());
-            selectedModeIndex = 3;
+            selectedModeIndex = (int)(Math.random() * allModes.size());
+            //selectedModeIndex = 3;
         }
 
         //Console mode
@@ -166,17 +166,11 @@ public class Play {
 
                 //Both region and zone list references the same region objects
                 //Hence, change flags in the region list would change them in the zone list too
-                /*
-                notOccupiedRegions.get(selectedRegionIndex).setDeployedTroops(1);
-                mapObj.getPlayerList().get(p).changeNbTroops(-1);
-
-                mapObj.getPlayerList().get(p).addControlledRegion(notOccupiedRegions.get(selectedRegionIndex));
-                notOccupiedRegions.get(selectedRegionIndex).setIsOccupied(true);*/
 
                 Player currentPlayer = mapObj.getPlayerList().get(p);
                 Region chosenRegion = notOccupiedRegions.get(selectedRegionIndex);
 
-                attribRegion.execute(currentPlayer, chosenRegion);
+                DeploymentAction.attribRegion(currentPlayer, chosenRegion);
 
 
                 notOccupiedRegions = notOccupiedRegions.stream()
@@ -232,7 +226,7 @@ public class Play {
 
                     Region selectedRegion = currentPlayer.getControlledRegions().get(selectedRegionIndex);
 
-                    deployTroops.execute(selectedRegion, nbTroopsToDeploy);
+                    DeploymentAction.deployTroops(selectedRegion, nbTroopsToDeploy);
 
                     currentPlayer.changeNbTroops(-nbTroopsToDeploy);
                     System.out.println("\n==================================================================================================================\n");
