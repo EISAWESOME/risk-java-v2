@@ -26,7 +26,7 @@ import org.w3c.dom.NodeList;
 public class Parser {
     public static void prepMap() {
 
-    	RiskProperties prop = RiskProperties.getInstance();
+    	MapFileHandler mapHandler = new MapFileHandler();
 
         Map mapObj = Map.getInstance();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -36,14 +36,15 @@ public class Parser {
 
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
+
             if(mapObj.getExMode() == Launcher.ExecMode.GUI.value()){
-                File mapXML = new File(prop.getProperty(RiskProperties.CURRENT_MAP_PATH_PROP) + MapFileHandler.CURRENT_MAP_NAME);
+                File mapXML = mapHandler.getCurrentMapFile();
+                mapPath = mapXML.getAbsolutePath();
             } else {
-                mapPath = "classic.xml";
+                mapPath = "resources/map/classic.xml";
                 File mapXML = new File(mapPath);
             }
             Document xml = builder.parse(mapPath);
-
 
             Element root = xml.getDocumentElement();
             XPathFactory xpf = XPathFactory.newInstance();

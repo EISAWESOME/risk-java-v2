@@ -136,7 +136,7 @@ public class UILauncher extends Application {
 			mapFileHandler.saveMap(choosedMapFile);
 			mapFileHandler.moveMapFileToCurrent(choosedMapFile);
 			Parser.prepMap();
-			new UIModeStage().getDisplay();
+			new UIModeStage().getDisplay(300, 300);
 		}
     	
     }
@@ -148,8 +148,11 @@ public class UILauncher extends Application {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Open the map XML file");
 			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML", "*.xml"));
-			choosedMapFile = fileChooser.showOpenDialog(stage);
-			fileNameLabel.setText(choosedMapFile.getName());
+			File fileToUpload = fileChooser.showOpenDialog(stage);
+			if (fileToUpload != null) {
+				fileNameLabel.setText(fileToUpload.getName());
+				choosedMapFile = fileToUpload;
+			}
 		}
 		
 	}

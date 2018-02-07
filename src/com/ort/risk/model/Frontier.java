@@ -11,6 +11,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.collectingAndThen;
 
 
+
 /**
  * @author tibo
  * Define a region's frontier

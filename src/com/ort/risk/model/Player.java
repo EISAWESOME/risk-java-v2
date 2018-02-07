@@ -66,6 +66,8 @@ public class Player {
 
 	}
 
+	public Player() {}
+	
 	public Player(String name, int order, int nbTroops) {
 		this.name = name;
 		this.order = order;
