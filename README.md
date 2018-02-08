@@ -32,11 +32,22 @@ Toutes les fonctionnalités demandées par le cahier des charges sont implément
 Nous avons envisagé de faire une IA, permettant a un joueur d'etre controller par l'ordinateur, mais cela n'a pas été fait.
 Le mode random à été longuement testé, et à prouvé être parfois instable. 
 
+### Mode graphique : Thibaut Moiroud
+
+Version du 08/02/2018 : 
+Fonctionnalitées présentes :
+ - Importation de la map (avec sauvegarde)
+ - Choix du mode de jeu + inscription des joueurs
+ - Affichage de la map avec toutes ces régions
+ - Attribution des régions
+
+Je rencontre des difficultés dans le workflow du jeu avec l'interface graphique et la gestion des composants dans une seule frame.
+
 
 -------------------------------------------------------------
 
 
 ## Versions
 
-Java SDK 9
+Java SDK 9  
 JavaFX 3.0.0
