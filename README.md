@@ -1,6 +1,6 @@
 # Risk
 
-Enoncé : https://pastebin.com/bbLNU5P9
+Enoncé v2 : https://pastebin.com/NrahnNDv
 
 Trello : https://trello.com/b/SkHNPCbR/java-risk
 
