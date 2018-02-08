@@ -22,7 +22,7 @@ public class War {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 
-        ConsoleLauncher.printTitle("GUERRE", 60, '~' ) ;
+        ConsoleLauncher.printTitle("GUERRE", 60, '~');
         while (warStartRegions.size() >= 1) {
 
             int warDecision = 0;
@@ -40,7 +40,7 @@ public class War {
                 System.out.println("Quel est votre choix ? ");
                 System.out.println("\t[0] Passer a la phase de renforcement");
                 System.out.println("\t[1] Lancer une attaque");
-                if(player.getIsHuman()) {
+                if (player.getIsHuman()) {
                     try {
                         do {
                             System.out.println("(0-1)");
@@ -51,7 +51,7 @@ public class War {
                     }
                 }
 
-                if(!player.getIsHuman()) {
+                if (!player.getIsHuman()) {
                     /* TODO DYLAN */
                     //Choix de lancer une attaque ou pas
                     // Aucune idée. Random pondéré en fonction du nombre de region controllé par l'IA peut etre ?
@@ -75,7 +75,7 @@ public class War {
                         System.out.println("\t[" + wr + "] " + currentRegion.getName() + " - Nb troupes : " + currentRegion.getDeployedTroops());
                     }
 
-                    if(player.getIsHuman()) {
+                    if (player.getIsHuman()) {
                         try {
                             do {
                                 System.out.println("Choix de la region de départ ? ");
@@ -87,7 +87,7 @@ public class War {
                         }
                     }
 
-                    if(!player.getIsHuman()) {
+                    if (!player.getIsHuman()) {
                         /* TODO DYLAN */
                         // Choix de la région attaquante
                         // choisir une region forte, et/ou qui a des adjacences enemies faible
@@ -117,7 +117,7 @@ public class War {
                         System.out.println("\t[" + wt + "] " + currentRegion.getName() + " - Nb troupes : " + currentRegion.getDeployedTroops());
                     }
 
-                    if(player.getIsHuman()) {
+                    if (player.getIsHuman()) {
                         try {
                             do {
                                 System.out.println("(0-" + allWarTargets.size() + ")");
@@ -128,7 +128,7 @@ public class War {
                         }
                     }
 
-                    if(!player.getIsHuman()) {
+                    if (!player.getIsHuman()) {
                         /* TODO DYLAN */
                         //Selection d'une region a attaquer
                         //Choisir la region la plus faible possible
@@ -160,7 +160,7 @@ public class War {
                         System.out.println("\t[" + wm + "] " + currentMove.getName());
                     }
 
-                    if(player.getIsHuman()) {
+                    if (player.getIsHuman()) {
                         try {
                             do {
                                 System.out.println("Choix de l'action ? ");
@@ -171,7 +171,7 @@ public class War {
                         }
                     }
 
-                    if(!player.getIsHuman()) {
+                    if (!player.getIsHuman()) {
                         /* TODO DYLAN */
                         // Toujours 0
                     }
@@ -188,7 +188,7 @@ public class War {
                 int nbAttack = 0;
 
                 System.out.println("Choisissez le nombre de troupes à envoyer pour l'attaque");
-                if(player.getIsHuman()) {
+                if (player.getIsHuman()) {
                     try {
                         do {
                             System.out.println("(1-" + Math.min(3, startRegion.getDeployedTroops()) + ")");
@@ -199,31 +199,39 @@ public class War {
                     }
                 }
 
-                if(!player.getIsHuman()) {
+                if (!player.getIsHuman()) {
                     /* TODO DYLAN */
                     // Aucune idée... random ?
                 }
 
                 Region endRegion = mapObj.getRegionByName(endRegionName);
-                Player defPlayer = mapObj.getOwnerOfRegion(endRegion);
+
                 int nbDef = 0;
 
-                System.out.println("\n" + defPlayer.getName() + ", combien de troupes vont defendre l'attaque ?");
-                if(defPlayer.getIsHuman()) {
-                    try {
-                        do {
-                            System.out.println("(1-" + Math.min(2, endRegion.getDeployedTroops()) + ")");
-                            nbDef = Integer.parseInt(br.readLine());
-                        } while (nbDef < 0 || nbDef > Math.min(2, endRegion.getDeployedTroops()));
-                    } catch (Exception ex) {
+                if (!endRegion.getIsRogue()) {
+                    Player defPlayer = mapObj.getOwnerOfRegion(endRegion);
 
+                    System.out.println("\n" + defPlayer.getName() + ", combien de troupes vont defendre l'attaque ?");
+                    if (defPlayer.getIsHuman()) {
+                        try {
+                            do {
+                                System.out.println("(1-" + Math.min(2, endRegion.getDeployedTroops()) + ")");
+                                nbDef = Integer.parseInt(br.readLine());
+                            } while (nbDef < 0 || nbDef > Math.min(2, endRegion.getDeployedTroops()));
+                        } catch (Exception ex) {
+
+                        }
                     }
-                }
 
-                if(!defPlayer.getIsHuman()) {
-                    /* TODO DYLAN */
-                    // Choix du nombre de troupes pour la défenses
-                    // Aucune idée...
+                    if (!defPlayer.getIsHuman()) {
+                        /* TODO DYLAN */
+                        // Choix du nombre de troupes pour la défenses
+                        // Aucune idée...
+                    }
+
+                }
+                else {
+                    nbDef = 1;
                 }
 
 

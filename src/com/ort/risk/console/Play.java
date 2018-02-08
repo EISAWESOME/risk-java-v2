@@ -100,14 +100,6 @@ public class Play {
             }
         }
 
-        //
-        if (exMode == ExecMode.GUI.value()) {
-            /* TODO : Input utilisateur via GUI */
-
-
-        }
-
-
         allModes.get(selectedModeIndex).setIsSelected(true);
 
         System.out.println("Mode selectionné : ");
@@ -121,12 +113,14 @@ public class Play {
             String playerName = "Player" + n;
             String playerIsHuman = "y";
 
-
             try {
-                do {
-                    System.out.println("\nEntrez le nom du joueur " + n);
+                System.out.println("\nEntrez le nom du joueur " + n);
+
+                if(br.readLine().length() > 0){
                     playerName = br.readLine();
-                } while (playerName.length() == 0);
+                }
+
+
 
             } catch (Exception ex) {
 
@@ -149,7 +143,7 @@ public class Play {
                     playerName = "(COM)" + playerName;
                     isHuman = false;
                     break;
-                default :
+                default:
                     isHuman = true;
                     break;
             }
@@ -170,7 +164,7 @@ public class Play {
         List<Region> notOccupiedRegions = mapObj.getRegions().stream()
                 .filter(p -> !p.getIsOccupied()).collect(Collectors.toList());
 
-        while (notOccupiedRegions.size() > 0) {
+        while (notOccupiedRegions.size() >= mapObj.getPlayerList().size() ) {
             for (int p = 0; p < mapObj.getPlayerList().size() && notOccupiedRegions.size() > 0; p++) {
                 int selectedRegionIndex = 0;
                 Player currentPlayer = mapObj.getPlayerList().get(p);
@@ -222,9 +216,18 @@ public class Play {
                 notOccupiedRegions = notOccupiedRegions.stream()
                         .filter(po -> !po.getIsOccupied()).collect(Collectors.toList());
 
-
             }
         }
+
+        //Give the regions that cant be evenly splitted between the player to the ORCS
+        for(Region stillNotOccupiedRegion : notOccupiedRegions){
+            //We can't use attribRegion function here, since the region doesnt actually belong to any player
+            stillNotOccupiedRegion.setDeployedTroops(1);
+            stillNotOccupiedRegion.setIsRogue(true);
+            stillNotOccupiedRegion.setIsOccupied(true);
+        }
+
+
         //Initial deployment
 
         // Console mode
@@ -322,14 +325,28 @@ public class Play {
 
     public static void printPlayerRegions() {
         Map mapObj = Map.getInstance();
-        for (int pq = 0; pq < mapObj.getPlayerList().size(); pq++) {
-            System.out.println(mapObj.getPlayerList().get(pq).getName());
-            List<Region> playerRegion = mapObj.getPlayerList().get(pq).getControlledRegions();
-            for (int pr = 0; pr < playerRegion.size(); pr++) {
-                System.out.println("\t" + playerRegion.get(pr).getName() + " : " + playerRegion.get(pr).getDeployedTroops());
+        //For each player
+        for (Player p : mapObj.getPlayerList()) {
+            System.out.println(p.getName());
+            List<Region> playerRegions = p.getControlledRegions();
+
+            //For every player region
+            for (Region r : playerRegions) {
+                System.out.println("\t" + r.getName() + " : " + r.getDeployedTroops());
 
             }
             System.out.println("\n");
+        }
+
+        List<Region> a = mapObj.getRogueRegions();
+        if(mapObj.getRogueRegions().size() > 0) {
+            System.out.println("Regions sauvage");
+
+            for (Region r : mapObj.getRogueRegions()) {
+                System.out.println("\t" + r.getName() + " : " + r.getDeployedTroops());
+
+            }
+
         }
     }
 

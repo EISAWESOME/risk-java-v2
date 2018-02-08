@@ -29,6 +29,7 @@ public class Region {
 	private List<Frontier> frontiers = new ArrayList<Frontier>();
 
 	private boolean isOccupied = false;
+	private boolean isRogue = false;
 
 	private int deployedTroops = 0;
 
@@ -89,6 +90,14 @@ public class Region {
 
 	public void setIsOccupied(boolean state){
 		this.isOccupied = state;
+	}
+
+	public boolean getIsRogue(){
+		return this.isRogue;
+	}
+
+	public void setIsRogue(boolean state){
+		this.isRogue = state;
 	}
 
 
