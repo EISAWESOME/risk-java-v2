@@ -109,7 +109,6 @@ public class Play {
 
 
         allModes.get(selectedModeIndex).setIsSelected(true);
-        ConsoleLauncher.clearConsole();
 
         System.out.println("Mode selectionné : ");
         System.out.println("\tNb joueurs : " + allModes.get(selectedModeIndex).getNbPlayer());
@@ -135,10 +134,9 @@ public class Play {
 
             System.out.println("Joueur humain ? ");
             try {
-                do {
-                    System.out.println("(y/n)");
-                    playerIsHuman = br.readLine();
-                } while (!playerIsHuman.equals("y") && !playerIsHuman.equals("n"));
+
+                System.out.println("(y/n)");
+                playerIsHuman = br.readLine();
 
             } catch (Exception ex) {
 
@@ -147,12 +145,12 @@ public class Play {
             boolean isHuman = true;
 
             switch (playerIsHuman) {
-                case "y":
-                    isHuman = true;
-                    break;
                 case "n":
                     playerName = "(COM)" + playerName;
                     isHuman = false;
+                    break;
+                default :
+                    isHuman = true;
                     break;
             }
             // Add players to the map
@@ -163,9 +161,8 @@ public class Play {
         }
 
         if (exMode == ExecMode.CONSOLE.value()) {
-            System.out.println("\n\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            System.out.println("\t\t Attribution des regions, les joueurs choissisent une région non occupée chacun leur tour !");
-            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n");
+
+            ConsoleLauncher.printTitle("Attribution des regions", 60, '+');
         }
 
         //Regions' attribution
@@ -184,9 +181,10 @@ public class Play {
 
                 //Console mode
                 if (exMode == ExecMode.CONSOLE.value()) {
-                    System.out.println("\n==========================================================");
-                    System.out.println("\t\tCHOIX DU JOUEUR " + currentPlayer.getName());
-                    System.out.println("==========================================================\n");
+
+                    String s = "CHOIX DU JOUEUR " + currentPlayer.getName();
+                    ConsoleLauncher.printTitle(s, 60, '=');
+
                     System.out.println("Regions neutres : ");
                     for (int nor = 0; nor < notOccupiedRegions.size(); nor++) {
                         System.out.println("\t[" + nor + "]" + notOccupiedRegions.get(nor).getName());
@@ -231,10 +229,8 @@ public class Play {
 
         // Console mode
         if (exMode == ExecMode.CONSOLE.value()) {
-            System.out.println("\n\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            System.out.println("\t\tDeploiement initial, repartissez vos troupes sur vos régions");
-            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n");
 
+            ConsoleLauncher.printTitle("Deploiement initial", 60, '+');
 
             for (int q = 0; q < mapObj.getPlayerList().size(); q++) {
                 Player currentPlayer = mapObj.getPlayerList().get(q);
@@ -242,10 +238,8 @@ public class Play {
                 int selectedRegionIndex = 0;
                 int nbTroopsToDeploy = 0;
 
+                ConsoleLauncher.printTitle("DEPLOIEMENT DE " + currentPlayer.getName(), 60, '=');
 
-                System.out.println("\n==========================================================");
-                System.out.println("\t\tDEPLOIEMENT DE " + currentPlayer.getName());
-                System.out.println("==========================================================\n");
                 while (currentPlayer.getNbTroops() > 0) {
 
                     System.out.println("Troupes a repartir par " + currentPlayer.getName() + " : " + currentPlayer.getNbTroops() + "\n");
@@ -322,11 +316,8 @@ public class Play {
             }
         }
 
-        System.out.println("\n\n==========================================================");
-        System.out.println("\t\tDEBUT DE LA PARTIE");
-        System.out.println("==========================================================");
 
-
+        ConsoleLauncher.printTitle("DEBUT DE LA PARTIE", 60, '=');
     }
 
     public static void printPlayerRegions() {

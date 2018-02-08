@@ -18,9 +18,9 @@ public class Reinforcement {
         List<Region> reinforcementRegions = player.getReinforcementRegions();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.println("==========================================================");
-        System.out.println("\t\tRENFORCEMENT ");
-        System.out.println("==========================================================");
+
+        ConsoleLauncher.printTitle("RENFORCEMENT", 60, '~' ) ;
+
         while(reinforcementRegions.size() >= 1){
 
 

@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import java.util.Arrays;
 
 /**
  * @author CS
@@ -22,10 +21,8 @@ public class War {
         List<Region> warStartRegions = player.getWarRegions();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.println("==========================================================");
-        System.out.println("\t\t\tGUERRE ");
-        System.out.println("==========================================================");
 
+        ConsoleLauncher.printTitle("GUERRE", 60, '~' ) ;
         while (warStartRegions.size() >= 1) {
 
             int warDecision = 0;
