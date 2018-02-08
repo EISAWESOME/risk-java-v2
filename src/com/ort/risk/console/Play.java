@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author CS
- * Game sourcecode. Contaien the two phases : Initialisation, and turn loops
+ * Contaien the two game phases : Initialisation, and turn loop
  */
 public class Play {
 

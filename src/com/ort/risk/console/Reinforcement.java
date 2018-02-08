@@ -7,8 +7,10 @@ import com.ort.risk.model.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.stream.Collectors;
-
+/**
+ * @author CS
+ * Console input mode for the reinforcement action
+ */
 public class Reinforcement {
     public static void execute(Player player){
         Map mapObj = Map.getInstance();

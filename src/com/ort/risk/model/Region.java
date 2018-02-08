@@ -115,6 +115,12 @@ public class Region {
 				frontiers.stream().map(Frontier::toString).collect(Collectors.joining(", ")));
 	}
 
+
+	/**
+	 * @author CS
+	 * Utils functions tied to a region
+	 */
+
 	/**
 	 * if the region has 2+ troops on it, and a frontier valid for war move
 	 * @param player

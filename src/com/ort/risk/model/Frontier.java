@@ -73,6 +73,12 @@ public class Frontier {
 				moves.stream().map(Move::toString).collect(Collectors.joining(", ")));
 	}
 
+
+	/**
+	 * @author CS
+	 * Utils functions tied to the frontiers
+	 */
+
 	/**
 	 *
 	 * @param player
@@ -157,7 +163,4 @@ public class Frontier {
 			return null;
 		}
 	}
-
-
-	
 }
