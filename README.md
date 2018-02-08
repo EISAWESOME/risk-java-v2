@@ -24,7 +24,7 @@ Archive .Jar (??)
 
 -------------------------------------------------------------
 
-## Avancé
+## Avancée
 
 ### Mode console : Clément Simonin
 
