@@ -125,9 +125,9 @@ public class Play {
                 try {
                     System.out.println("\nEntrez le nom du joueur " + n);
 
-                    if (br.readLine().length() > 0) {
-                        playerName = br.readLine();
-                    }
+
+                    playerName = br.readLine();
+
 
 
                 } catch (Exception ex) {
@@ -150,13 +150,20 @@ public class Play {
             switch (playerIsHuman) {
                 case "n":
                     playerName = "(COM)" + playerName;
-                    isHuman = false;
+                    //isHuman = false;
+                    //IA pas dev
+                    isHuman = true;
+
                     break;
                 default:
                     isHuman = true;
                     break;
             }
             // Add players to the map
+
+            if(playerName.length() == 0){
+                playerName = "Player" + n;
+            }
             mapObj.addPlayer(new Player(playerName, isHuman, n, nbTroupePerPlayer));
 
             /*System.out.println("\tNom : " + playerName);
