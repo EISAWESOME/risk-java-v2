@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
+/**
+ * @author CS
+ * Functions tied to the War action
+ */
 public class WarAction {
     public static Object[] Assault(Region atkRegion, Player atkPlayer, Region defRegion, int nbAttack, int nbDef){
         /**

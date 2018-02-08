@@ -9,6 +9,10 @@ import java.util.List;
 
 import java.util.Arrays;
 
+/**
+ * @author CS
+ * Console input mode for the war action
+ */
 public class War {
 
     public static void execute(Player player) {

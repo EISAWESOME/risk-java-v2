@@ -2,6 +2,10 @@ package com.ort.risk.console;
 
 import com.ort.risk.game.*;
 
+/**
+ * @author CS
+ * Entry point of the console mode
+ */
 public class ConsoleLauncher {
 
     public static void run() {
