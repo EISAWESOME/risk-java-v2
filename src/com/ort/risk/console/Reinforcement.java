@@ -191,6 +191,8 @@ public class Reinforcement {
                 return;
             }
 
+            reinforcementRegions = player.getReinforcementRegions();
+
         }
 
     }
