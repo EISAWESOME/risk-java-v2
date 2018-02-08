@@ -54,6 +54,13 @@ public class Play {
             validPlayerList = playerList.stream()
                     .filter(p -> p.getControlledRegions().size() >= 1).collect(Collectors.toList());
         }
+
+
+        //When there is only one valid player
+        displayEndGameScreen(validPlayerList.get(0));
+
+
+
     }
 
     public static void InitDeployment() {
@@ -113,27 +120,29 @@ public class Play {
             String playerName = "Player" + n;
             String playerIsHuman = "y";
 
-            try {
-                System.out.println("\nEntrez le nom du joueur " + n);
+            if(exMode == ExecMode.CONSOLE.value()) {
 
-                if(br.readLine().length() > 0){
-                    playerName = br.readLine();
+                try {
+                    System.out.println("\nEntrez le nom du joueur " + n);
+
+                    if (br.readLine().length() > 0) {
+                        playerName = br.readLine();
+                    }
+
+
+                } catch (Exception ex) {
+
                 }
 
+                System.out.println("Joueur humain ? ");
+                try {
 
+                    System.out.println("(y/n)");
+                    playerIsHuman = br.readLine();
 
-            } catch (Exception ex) {
+                } catch (Exception ex) {
 
-            }
-
-            System.out.println("Joueur humain ? ");
-            try {
-
-                System.out.println("(y/n)");
-                playerIsHuman = br.readLine();
-
-            } catch (Exception ex) {
-
+                }
             }
 
             boolean isHuman = true;
@@ -323,6 +332,23 @@ public class Play {
         ConsoleLauncher.printTitle("DEBUT DE LA PARTIE", 60, '=');
     }
 
+    public static void displayEndGameScreen(Player winner){
+        //Make sure to clear the screen
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+
+        System.out.println(
+                "   ____     ____        _    __     __    U  ___ u \n" +
+                "U | __\")uU |  _\"\\ u U  /\"\\  u\\ \\   /\"/u    \\/\"_ \\/ \n" +
+                " \\|  _ \\/ \\| |_) |/  \\/ _ \\/  \\ \\ / //     | | | | \n" +
+                "  | |_) |  |  _ <    / ___ \\  /\\ V /_,-.-,_| |_| | \n" +
+                "  |____/   |_| \\_\\  /_/   \\_\\U  \\_/-(_/ \\_)-\\___/  \n" +
+                " _|| \\\\_   //   \\\\_  \\\\    >>  //            \\\\    \n" +
+                "(__) (__) (__)  (__)(__)  (__)(__)          (__)   ");
+
+        System.out.println( winner.getName() + " remporte la partie !!!");
+
+    }
+
     public static void printPlayerRegions() {
         Map mapObj = Map.getInstance();
         //For each player
@@ -349,5 +375,7 @@ public class Play {
 
         }
     }
+
+
 
 }

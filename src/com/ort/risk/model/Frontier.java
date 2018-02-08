@@ -132,7 +132,12 @@ public class Frontier {
 							.filter(r -> r.getName().equalsIgnoreCase(this.getRegionEndName() ))
 							.collect(Collectors.toList());
 
-					return target.get(0);
+					if(target.size() > 0){
+						return target.get(0);
+					} else {
+						return null;
+					}
+
 				}
 			}
 			return null;
