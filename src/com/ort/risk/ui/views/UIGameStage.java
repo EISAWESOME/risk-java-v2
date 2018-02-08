@@ -4,6 +4,7 @@ package com.ort.risk.ui.views;
  * @author tibo
  */
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -29,19 +30,30 @@ import com.ort.risk.model.Region;
 
 public class UIGameStage extends CustomStage {
 
-	private ListView<String> regionsInitialView;
-	private Label playersInfoLbl, playerLbl;
-	private Button placeTroopsBtn, deployTroops, attackBtn, reinforceBtn, endOfTurnBtn;
+	private ListView<String> regionsInitialView, playerRegionView;
+	private Label turnLbl, playersInfoLbl, playerLbl;
+	private Button placeTroopsBtn, deployTroopsBtn, attackBtn, reinforceBtn, endOfTurnBtn;
 	private Player currentPlayer;
+	private boolean attackDone, reinforceDone, deployDone, phaseInitAttrib, phaseInitDeploy;
+	private int countTurn;
 	
 	public UIGameStage() {
 		super("Risk - Game");
         
+		currentPlayer = map.getPlayerList().stream().filter(p -> p.getOrder() == 1).findFirst().get();
+		phaseInitAttrib = false;
+		phaseInitDeploy = false;
+		
         // Map name
         this.setTitle(getTitle() + " - " + map.getName());
         
+        // Turn label
+        countTurn = 0;
+        turnLbl = new Label(String.format("Turn n°%d", countTurn++));
+        turnLbl.setFont(new Font(turnLbl.getFont().getFamily(), 30));
+        
         // Label current player name
-        playerLbl = new Label(map.getPlayerList().stream().filter(p -> p.getOrder() == 1).findFirst().get().getName());
+        playerLbl = new Label("Player " + currentPlayer.getName());
         playerLbl.setFont(new Font(playerLbl.getFont().getFamily(), 30));
         
         // Label current player order
@@ -62,6 +74,10 @@ public class UIGameStage extends CustomStage {
         		.collect(Collectors.toList())));
         regionsInitialView.autosize();
         
+        // Player Regions
+        playerRegionView = new ListView<String>();
+        playerRegionView.autosize();
+        
         // Players regions label
         // TODO : Changer cette partie pour avoir quelque chose de plus personnalisé pour les joueurs
         playersInfoLbl = new Label();
@@ -70,6 +86,8 @@ public class UIGameStage extends CustomStage {
         updatePlayersInfoLbl();
         
         // Actions button
+        // First step of the game
+        // attribute regions until there isn't left
         placeTroopsBtn = new Button("Get region");
         placeTroopsBtn.setOnAction(new EventHandler<ActionEvent> () {
 
@@ -82,21 +100,31 @@ public class UIGameStage extends CustomStage {
 							.findFirst()
 							.get();
 					DeploymentAction.attribRegion(currentPlayer, selectedRegion);
-					updateRegions();
+					updateInitRegions();
 					updatePlayersInfoLbl();
 				}
 			}
         	
         });
-        deployTroops = new Button("Deploy troops");
+        // Second step 
+        deployTroopsBtn = new Button("Deploy troops");
+        deployTroopsBtn.setDisable(true);
         attackBtn = new Button("Attack");
+        attackBtn.setDisable(true);
         reinforceBtn = new Button("Reinforce region");
+        reinforceBtn.setDisable(true);
         endOfTurnBtn = new Button("End of turn");
         endOfTurnBtn.setOnAction(new EventHandler<ActionEvent> () {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				nextTurn();
+				if (!phaseInitAttrib) {
+					nextTurnPhaseInit();
+				}
+				if (phaseInitAttrib && !phaseInitDeploy) {
+					
+				}
+				currentPlayer = nextTurn();
 			}
         	
         });
@@ -114,13 +142,17 @@ public class UIGameStage extends CustomStage {
 		mainPane.getColumnConstraints().addAll(column1, column2, column3, column4);
         
         // Filling main panel
-        // Players Regions
+		// Current turn
+		GridPane.setHalignment(turnLbl, HPos.CENTER);
+		mainPane.add(turnLbl, 0, 0);
+		
+		// Current player name
+		GridPane.setHalignment(playerLbl, HPos.CENTER);
+		mainPane.add(playerLbl, 1, 0, 2, 1);
+		
+		// Players Regions
 		GridPane.setHalignment(playersInfoLbl, HPos.LEFT);
 		mainPane.add(playersInfoLbl, 2, 1);
-        
-        // Current player name
-        GridPane.setHalignment(playerLbl, HPos.CENTER);
-		mainPane.add(playerLbl, 0, 0, 3, 1);
         
         // Map View
         GridPane.setHalignment(mapImgView, HPos.LEFT);
@@ -132,15 +164,15 @@ public class UIGameStage extends CustomStage {
 		
 		// Buttons
 		GridPane.setHalignment(placeTroopsBtn, HPos.LEFT);
-		mainPane.add(placeTroopsBtn, 0, 2);
-		GridPane.setHalignment(attackBtn, HPos.LEFT);
+		mainPane.add(placeTroopsBtn, 1, 2);
+		GridPane.setHalignment(attackBtn, HPos.RIGHT);
 		mainPane.add(attackBtn, 1, 2);
 		GridPane.setHalignment(reinforceBtn, HPos.LEFT);
 		mainPane.add(reinforceBtn, 2, 2);
+		GridPane.setHalignment(deployTroopsBtn, HPos.RIGHT);
+		mainPane.add(deployTroopsBtn, 2, 2);
 		GridPane.setHalignment(endOfTurnBtn, HPos.LEFT);
-		mainPane.add(endOfTurnBtn, 3, 2);
-		GridPane.setHalignment(deployTroops, HPos.LEFT);
-		mainPane.add(deployTroops, 0, 3);
+		mainPane.add(endOfTurnBtn, 3, 3);
 		
 	}
 	
@@ -151,27 +183,64 @@ public class UIGameStage extends CustomStage {
 			renderText.append(String.format("%s n°%d : %s", playerType, player.getOrder(), player.getName()));
 			renderText.append(String.format("\n%d troops", player.getNbTroops()));
 			if (player.getControlledRegions().size() > 0)
-				renderText.append(String.format("Regions : { %s }", player.getControlledRegions().stream()
+				renderText.append(String.format("\nRegions : { %s }", player.getControlledRegions().stream()
 						.map(Region::getName).collect(Collectors.joining(", "))));
 			renderText.append("\n\n");
 		}
 		playersInfoLbl.setText(renderText.toString());
 	}
 	
-	private void updateRegions() {
+	private void updateInitRegions() {
 		regionsInitialView.setItems(FXCollections.observableArrayList(
-        		map.getRegions().stream()
+        		map.getRegions()
+        		.stream()
         		.filter(r -> !r.getIsOccupied())
         		.map(r -> r.getName())
         		.collect(Collectors.toList())));
 	}
 	
+	private void updatePlayerRegions() {
+		playerRegionView.setItems(FXCollections.observableArrayList(
+				currentPlayer.getControlledRegions()
+				.stream()
+				.map(r -> String.format("%s - Troops : %d", r.getName(), r.getDeployedTroops()))
+				.collect(Collectors.toList())
+				));
+	}
+	
 	private Player nextTurn() {
-		Player nextPlayer = map.getPlayerList().stream().filter(p -> p.getOrder() == currentPlayer.getOrder() + 1).findFirst().get();
-		if (nextPlayer == null)
+		turnLbl.setText(String.format("Turn n°%d", countTurn++));
+		Player nextPlayer = null;
+		Optional<Player> nextPlayerSearch = map.getPlayerList().stream().filter(p -> p.getOrder() == currentPlayer.getOrder() + 1).findFirst();
+		if (nextPlayerSearch.isPresent())
+			nextPlayer = nextPlayerSearch.get();
+		else
 			nextPlayer = map.getPlayerList().stream().filter(p -> p.getOrder() == 1).findFirst().get();
-		playerLbl.setText(nextPlayer.getName());
+		playerLbl.setText("Player " + nextPlayer.getName());
 		return nextPlayer;
 	}
+	
+	private void nextTurnPhaseInit() {
+		if (regionsInitialView.getItems().isEmpty()) {
+			deployTroopsBtn.setDisable(false);
+			placeTroopsBtn.setDisable(true);
+			phaseInitAttrib = true;
+		}
+	}
+	
+	private void nextTurnPhaseDeploy() {
+		
+	}
 
+	private void attack() {
+		
+	}
+	
+	private void reinforce() {
+		
+	}
+	
+	private void deploy() {
+		
+	}
 }

@@ -27,6 +27,7 @@ public class Launcher {
                     break;
                 //Mode graphique
                 case "-g":
+                	mapObj.setExMode(ExecMode.GUI.value());
                     UILauncher.run(args);
                     break;
                 default:
