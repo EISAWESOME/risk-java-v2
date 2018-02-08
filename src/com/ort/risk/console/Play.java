@@ -116,7 +116,6 @@ public class Play {
         System.out.println("\tNb initial de troupes : " + allModes.get(selectedModeIndex).getNbInitTroops());
         System.out.println("\n");
 
-        System.out.println("Liste des joueurs : ");
         int nbTroupePerPlayer = allModes.get(selectedModeIndex).getNbInitTroops();
         for (int n = 1; n <= allModes.get(selectedModeIndex).getNbPlayer(); n++) {
 
@@ -126,7 +125,7 @@ public class Play {
 
             try {
                 do {
-                    System.out.println("Entrez le nom du joueur " + n);
+                    System.out.println("\nEntrez le nom du joueur " + n);
                     playerName = br.readLine();
                 } while (playerName.length() == 0);
 
@@ -152,14 +151,15 @@ public class Play {
                     isHuman = true;
                     break;
                 case "n":
+                    playerName = "(COM)" + playerName;
                     isHuman = false;
                     break;
             }
             // Add players to the map
             mapObj.addPlayer(new Player(playerName, isHuman, n, nbTroupePerPlayer));
 
-            System.out.println("\tNom : " + "Player" + n);
-            System.out.println("\tOrdre de passage : " + n);
+            /*System.out.println("\tNom : " + playerName);
+            System.out.println("\tOrdre de passage : " + n);*/
         }
 
         if (exMode == ExecMode.CONSOLE.value()) {
@@ -205,6 +205,11 @@ public class Play {
 
                     if (!currentPlayer.getIsHuman()) {
                         /* TODO DYLAN */
+                        //L'ordi doit choisir une region non occupé
+                        //Ca serait bien si il pouvoir choisir des regions de la meme zone, tant que toutes les regions de la zone sont libre
+                        //Dans tout les cas, ils faut qu'il privilegie les adjacences
+                        //Une facon simple de faire, est de lui faire prendre une premiere region random
+                        //Puis de regarder dans ses frontiere, de prendre la regionEnd de la frontiere, et ainsi de suite
                     }
 
                 }
@@ -265,6 +270,8 @@ public class Play {
 
                     if (!currentPlayer.getIsHuman()) {
                         /* TODO DYLAN */
+                        //L'ordi doit decider sur quelles region repartir ses troupes
+                        // Deployer de préférence sur les regions qui ont au moins une frontiere avec une région enemies
                     }
 
                     //Select number of troop to deploy
@@ -283,6 +290,8 @@ public class Play {
 
                     if (!currentPlayer.getIsHuman()) {
                         /* TODO DYLAN */
+                        //Choix du nombre de troupe a deployer
+                        // Donner un nombre de troupe en fonction du nombre de region enemies adjacentes, et du nombre total de troupe restant a deployé
                     }
 
                     Region selectedRegion = currentPlayer.getControlledRegions().get(selectedRegionIndex);

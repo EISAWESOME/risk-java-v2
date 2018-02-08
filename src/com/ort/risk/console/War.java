@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import java.util.Arrays;
+
 public class War {
 
     public static void execute(Player player) {
@@ -35,7 +37,7 @@ public class War {
 
             if (exMode == Launcher.ExecMode.CONSOLE.value()) {
                 System.out.println("Quel est votre choix ? ");
-                System.out.println("\t[0] Arreter la guerre");
+                System.out.println("\t[0] Passer a la phase de renforcement");
                 System.out.println("\t[1] Lancer une attaque");
                 if(player.getIsHuman()) {
                     try {
@@ -48,8 +50,10 @@ public class War {
                     }
                 }
 
-                if(player.getIsHuman()) {
+                if(!player.getIsHuman()) {
                     /* TODO DYLAN */
+                    //Choix de lancer une attaque ou pas
+                    // Aucune idée. Random pondéré en fonction du nombre de region controllé par l'IA peut etre ?
                 }
 
                 System.out.println("\n==========================================================\n");
@@ -84,6 +88,8 @@ public class War {
 
                     if(!player.getIsHuman()) {
                         /* TODO DYLAN */
+                        // Choix de la région attaquante
+                        // choisir une region forte, et/ou qui a des adjacences enemies faible
                     }
                     System.out.println("\n==========================================================\n");
                 }
@@ -123,6 +129,8 @@ public class War {
 
                     if(!player.getIsHuman()) {
                         /* TODO DYLAN */
+                        //Selection d'une region a attaquer
+                        //Choisir la region la plus faible possible
                     }
 
                     System.out.println("\n==========================================================\n");
@@ -162,8 +170,9 @@ public class War {
                         }
                     }
 
-                    if(player.getIsHuman()) {
+                    if(!player.getIsHuman()) {
                         /* TODO DYLAN */
+                        // Toujours 0
                     }
 
                     System.out.println("\n==========================================================\n");
@@ -191,6 +200,7 @@ public class War {
 
                 if(!player.getIsHuman()) {
                     /* TODO DYLAN */
+                    // Aucune idée... random ?
                 }
 
                 Region endRegion = mapObj.getRegionByName(endRegionName);
@@ -198,7 +208,7 @@ public class War {
                 int nbDef = 0;
 
                 System.out.println("\n" + defPlayer.getName() + ", combien de troupes vont defendre l'attaque ?");
-                if(player.getIsHuman()) {
+                if(defPlayer.getIsHuman()) {
                     try {
                         do {
                             System.out.println("(1-" + Math.min(2, endRegion.getDeployedTroops()) + ")");
@@ -209,12 +219,14 @@ public class War {
                     }
                 }
 
-                if(!player.getIsHuman()) {
+                if(!defPlayer.getIsHuman()) {
                     /* TODO DYLAN */
+                    // Choix du nombre de troupes pour la défenses
+                    // Aucune idée...
                 }
 
 
-                Object[] result = availableMoves.get(selectedMoveIndex).execute(startRegion, player, endRegion, nbAttack, nbDef);
+                Object[] result = availableMoves.get(selectedMoveIndex).execute(startRegion, endRegion, player, nbAttack, nbDef);
                 /**
                  * 0 : Jet de dés de l'attaque
                  * 1 : jet de dès de la defense
