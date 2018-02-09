@@ -232,7 +232,6 @@ public class War {
 
                     }
 
-
                     if (!r) {
                         Player defPlayer = mapObj.getOwnerOfRegion(endRegion);
 
