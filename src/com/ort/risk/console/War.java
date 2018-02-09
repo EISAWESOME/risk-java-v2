@@ -298,12 +298,14 @@ public class War {
 
 
                 } else {
-                    System.out.println("\n" + player.getName() + " a arreter la guerre !");
+                    System.out.println(" ??? ");
                     // If the player choose to stop the war
                     return;
+
                 }
             } else {
-                System.out.println(" ??? ");
+
+                System.out.println("\n" + player.getName() + " a arreter la guerre !");
                 // If the player choose to stop the war
                 return;
             }
